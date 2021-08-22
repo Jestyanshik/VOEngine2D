@@ -14,11 +14,12 @@ project "Sandbox"
 
 	includedirs {
 		"%{wks.location}/VOEngine/src",
-		"%{wks.location}/VOEngine/pch"
+		"%{wks.location}/VOEngine/pch",
+		"%{wks.location}/VOEngine/vendor/spdlog/include"
 	}
 
    filter "configurations:Debug"
-      defines { "DEBUG" }
+      defines { "DEBUG", "LOG" }
       symbols "On"
 
    filter "configurations:Release"

@@ -1,7 +1,9 @@
 #include <vopch.h>
+#include "VOEngine.h"
 
 int main() {
-	std::cout << "Hello\n";
-	std::cin.get();
+	VOEngine::Log::Init();
+	VO_INFO("Hello\n");
+	VO_ASSERT(-1);
 	return 0;
 }

@@ -6,7 +6,7 @@ project "VOEngine"
 	objdir ("%{wks.location}/bin-int/" .. outputDir .. "/%{prj.name}")
 
 	pchheader "vopch.h"
-	pchsource "pch/vopch.cpp"
+	pchsource "src/vopch.cpp"
 	staticruntime "off"
 
 	files {
@@ -15,11 +15,12 @@ project "VOEngine"
 	}
 
 	includedirs {
-		"src"
+		"src",
+		"vendor/spdlog/include"
 	}
 
    filter "configurations:Debug"
-      defines { "DEBUG" }
+      defines { "DEBUG", "LOG" }
       symbols "On"
 
    filter "configurations:Release"
