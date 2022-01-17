@@ -1,3 +1,4 @@
 #pragma once
 
-#include "Core/Log/Log.h"
+#include "Core/Entrypoint.h"
+#include "Core/Performance.h"

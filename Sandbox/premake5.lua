@@ -19,7 +19,7 @@ project "Sandbox"
 	}
 
    filter "configurations:Debug"
-      defines { "DEBUG", "LOG" }
+      defines { "DEBUG", "LOG", "PROFILING" }
       symbols "On"
 
    filter "configurations:Release"
