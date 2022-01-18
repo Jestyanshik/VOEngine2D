@@ -15,7 +15,8 @@ project "Sandbox"
 	includedirs {
 		"%{wks.location}/VOEngine/src",
 		"%{wks.location}/VOEngine/pch",
-		"%{wks.location}/VOEngine/vendor/spdlog/include"
+		"%{wks.location}/VOEngine/vendor/spdlog/include",
+		"%{wks.location}/VOEngine/vendor/GLFW/include"
 	}
 
    filter "configurations:Debug"

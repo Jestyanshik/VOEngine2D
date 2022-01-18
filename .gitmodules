@@ -1,3 +1,6 @@
 [submodule "VOEngine/vendor/spdlog"]
 	path = VOEngine/vendor/spdlog
 	url = https://github.com/gabime/spdlog
+[submodule "VOEngine/vendor/GLFW"]
+	path = VOEngine/vendor/GLFW
+	url = https://github.com/xilo228/glfw.git

@@ -11,3 +11,4 @@ group ""
 
 include "VOEngine"
 include "Sandbox"
+include "VOEngine/vendor/GLFW"

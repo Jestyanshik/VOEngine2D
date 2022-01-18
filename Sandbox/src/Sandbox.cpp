@@ -3,12 +3,31 @@
 
 
 class Game : public Entrypoint {
+public:
+	VOEngine::Window Window = VOEngine::Window(1280, 720, "My Game", true, true, true, false, false);
 	void onStart() {
-		VO_INFO("Hello\n");
-		VO_ASSERT(-1);
 	}
 	void onUpdate() {
-		running = false;
+		if (Window.isKeyPressed(VOEngine::Key::Escape)) {
+			running = false;
+		}
+		if (Window.isKeyPressed(VOEngine::Key::F)) {
+			Window.setWindowMode(WindowModes::fullscreen);
+		}
+		if (Window.isKeyPressed(VOEngine::Key::W)) {
+			Window.setWindowMode(WindowModes::windowed);
+		}
+		if (Window.isKeyPressed(VOEngine::Key::B)) {
+			Window.setWindowMode(WindowModes::borderless);
+		}
+		if (Window.isKeyPressed(VOEngine::Key::S)) {
+			Window.requestAttention();
+		}
+
+		Window.update();
+	}
+	void onTerminate() {
+		
 	}
 };
 

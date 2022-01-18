@@ -1,26 +1,30 @@
 #include "vopch.h"
 #include "Entrypoint.h"
 #include "Performance.h"
-
+#include "GLFW/glfw3.h"
 
 void Entrypoint::beforeStart() {
-	timeit();
-	VOEngine::Log::Init();
-}
-
-void Entrypoint::onStart() {
 
 }
 
-void Entrypoint::onUpdate() {}
 
-void Entrypoint::onTerminate() {}
+void Entrypoint::afterUpdate() {
+	glfwPollEvents();
+}
+
+void Entrypoint::afterTerminate() {
+	glfwTerminate();
+}
+
+
 
 void Entrypoint::run() { 
 	beforeStart();
-	onStart(); 
+	onStart();
 	while (running) {
 		onUpdate();
+		afterUpdate();
 	}
 	onTerminate();
+	afterTerminate();
 }

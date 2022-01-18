@@ -11,7 +11,7 @@ namespace VOEngine {
 		static std::shared_ptr<spdlog::logger> s_CoreLogger;
 		static std::shared_ptr<spdlog::logger> s_ClientLogger;
 	public:
-		static void Init();
+		static bool Init();
 		static std::shared_ptr<spdlog::logger>& getCoreLogger() { return s_CoreLogger; };
 		static std::shared_ptr<spdlog::logger>& getClientLogger() { return s_ClientLogger; };
 		

@@ -10,13 +10,25 @@ project "VOEngine"
 	staticruntime "off"
 
 	files {
-		"**.h",
-		"**.cpp"	
+		"src/**.h",
+		"src/**.cpp"	
+	}
+
+	defines
+	{
+		"_CRT_SECURE_NO_WARNINGS",
+		"GLFW_INCLUDE_NONE"
 	}
 
 	includedirs {
 		"src",
-		"vendor/spdlog/include"
+		"vendor/spdlog/include",
+		"vendor/GLFW/include"
+	}
+
+	links {
+		"GLFW",
+		"opengl32.lib"
 	}
 
    filter "configurations:Debug"
