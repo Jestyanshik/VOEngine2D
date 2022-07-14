@@ -16,7 +16,9 @@ project "Sandbox"
 		"%{wks.location}/VOEngine/src",
 		"%{wks.location}/VOEngine/pch",
 		"%{wks.location}/VOEngine/vendor/spdlog/include",
-		"%{wks.location}/VOEngine/vendor/GLFW/include"
+		"%{wks.location}/VOEngine/vendor/GLFW/include",
+		"%{wks.location}/VOEngine/vendor/Glad/include",
+		"%{wks.location}/VOEngine/vendor/ImGui"
 	}
 
    filter "configurations:Debug"

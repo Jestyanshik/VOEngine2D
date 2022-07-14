@@ -11,7 +11,8 @@ project "VOEngine"
 
 	files {
 		"src/**.h",
-		"src/**.cpp"	
+		"src/**.cpp",
+
 	}
 
 	defines
@@ -23,12 +24,16 @@ project "VOEngine"
 	includedirs {
 		"src",
 		"vendor/spdlog/include",
-		"vendor/GLFW/include"
+		"vendor/GLFW/include",
+		"vendor/glad/include",
+		"vendor/ImGui"
 	}
 
 	links {
 		"GLFW",
-		"opengl32.lib"
+		"Glad",
+		"opengl32.lib",
+		"ImGui"
 	}
 
    filter "configurations:Debug"

@@ -10,6 +10,7 @@ void Entrypoint::beforeStart() {
 
 void Entrypoint::afterUpdate() {
 	glfwPollEvents();
+	
 }
 
 void Entrypoint::afterTerminate() {

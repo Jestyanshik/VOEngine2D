@@ -8,6 +8,7 @@ public:
 	void onStart() {
 	}
 	void onUpdate() {
+		Window.testFunc();
 		if (Window.isKeyPressed(VOEngine::Key::Escape)) {
 			running = false;
 		}

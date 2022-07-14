@@ -1,2 +1,2 @@
-call "vendor/premake/premake5" vs2019
+call "vendor/premake/premake5" vs2022
 PAUSE

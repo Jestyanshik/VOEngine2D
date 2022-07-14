@@ -1,5 +1,11 @@
 #pragma once
-#include <GLFW/glfw3.h>
+#include "vopch.h"
+
+#include "imgui.h"
+#include "ImGuiBackend/imgui_impl_opengl3.h"
+#include "ImGuiBackend/imgui_impl_glfw.h"
+#include "glad/glad.h"
+#include "GLFW/glfw3.h"
 #include "KeyCodes.h"
 
 struct WindowModes {
@@ -51,6 +57,7 @@ namespace VOEngine {
 		}
 		bool isKeyPressed(VOEngine::KeyCode key);
 		void setIcon(const char* path);
+		void testFunc();
 		void requestAttention();
 		void setWindowMode(int wm);
 		void changeSize(int width, int height);
