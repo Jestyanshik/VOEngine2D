@@ -1,10 +1,5 @@
 #pragma once
 #include "vopch.h"
-
-#include "imgui.h"
-#include "ImGuiBackend/imgui_impl_opengl3.h"
-#include "ImGuiBackend/imgui_impl_glfw.h"
-#include "glad/glad.h"
 #include "GLFW/glfw3.h"
 #include "KeyCodes.h"
 
@@ -23,6 +18,7 @@ namespace VOEngine {
 		const GLFWvidmode* m_Mode = nullptr;
 		bool m_Resizable, m_Decorated, m_Focused, m_AutoIconify, m_Maximized = false;
 		int m_Width, m_Height;
+		int m_FramebufferW, m_FramebufferH;
 		const char* m_Title;
 		const char* m_PathToIcon;
 	public:
@@ -51,18 +47,29 @@ namespace VOEngine {
 				VO_CORE_ERROR("Error code: {} \n Description:\n {}", code, description);
 			});
 			createWindow();
+
+
 		}
 		~Window() {
 			glfwDestroyWindow(m_Window);
 		}
 		bool isKeyPressed(VOEngine::KeyCode key);
+		bool shouldClose();
+		GLFWwindow* getGLFWwindow();
 		void setIcon(const char* path);
-		void testFunc();
 		void requestAttention();
 		void setWindowMode(int wm);
 		void changeSize(int width, int height);
 		void changeTitle(const char* title);
-		void update();
+		void closeWindow();
+		void pollEvents();
+		void swapBuffers();
+		int& getFramebufferWidth() {
+			return m_FramebufferW;
+		};
+		int& getFramebufferHeight() {
+			return m_FramebufferH;
+		};
 	private:
 		void detectMonitor();
 		void createWindow();

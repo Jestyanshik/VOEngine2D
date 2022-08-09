@@ -25,14 +25,14 @@ namespace VOEngine {
 #define VO_CORE_ERROR(...) VOEngine::Log::getCoreLogger()->error(__VA_ARGS__)
 #define VO_CORE_CRITICAL(...) VOEngine::Log::getCoreLogger()->critical(__VA_ARGS__)
 #define VO_CORE_TRACE(...) VOEngine::Log::getCoreLogger()->trace(__VA_ARGS__)
-#define VO_CORE_ASSERT(value) if (value == -1) {VOEngine::Log::getCoreLogger()->error("Assertion failed in {}", __FUNCTION__);}
+#define VO_CORE_ASSERT(value) if (value == 0) {VOEngine::Log::getCoreLogger()->error("Assertion failed in {} at line {}", __FUNCTION__, __LINE__);}
 
 #define VO_INFO(...) VOEngine::Log::getClientLogger()->info(__VA_ARGS__)
 #define VO_WARN(...) VOEngine::Log::getClientLogger()->warn(__VA_ARGS__)
 #define VO_ERROR(...) VOEngine::Log::getClientLogger()->error(__VA_ARGS__)
 #define VO_CRITICAL(...) VOEngine::Log::getClientLogger()->critical(__VA_ARGS__)
 #define VO_TRACE(...) VOEngine::Log::getClientLogger()->trace(__VA_ARGS__)
-#define VO_ASSERT(value) if (value == -1) {VOEngine::Log::getClientLogger()->error("Assertion failed in {}", __FUNCTION__);}
+#define VO_ASSERT(value) if (value == 0) {VOEngine::Log::getClientLogger()->error("Assertion failed in {} at line {}", __FUNCTION__, __LINE__);}
 
 
 #else
