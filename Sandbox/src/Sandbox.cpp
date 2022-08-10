@@ -9,13 +9,15 @@ int main() {
 	VOEngine::Window editorWindow = VOEngine::Window(1920, 1080, "VOEngine");
 	imgui.passVOEngineWindow(&editorWindow);
 
+	
 	imgui.createWindow([]() {
-		ImGui::Begin("Hello");
+		ImGui::Begin("VOEngine", NULL);
 		ImGui::End();
 		});
 	imgui.createWindow([]() {
-
 		ImGui::Begin("Alolololoasdsad");
+		static char buf[10000];
+		ImGui::InputText("Text", buf, sizeof(buf));
 		ImGui::End();
 		});
 	while (!editorWindow.shouldClose()) {
@@ -23,7 +25,7 @@ int main() {
 		if (editorWindow.isKeyPressed(VOEngine::Key::Escape)) {
 			editorWindow.closeWindow();
 		}
-		
+		if (editorWindow.isKeyPressed(VOEngine::Key::W)) editorWindow.setWindowMode(WindowModes::windowed);
 		imgui.render();
 	}
 

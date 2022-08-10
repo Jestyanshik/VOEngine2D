@@ -18,11 +18,14 @@ namespace VOEngine {
 		const GLFWvidmode* m_Mode = nullptr;
 		bool m_Resizable, m_Decorated, m_Focused, m_AutoIconify, m_Maximized = false;
 		int m_Width, m_Height;
+		int m_Xpos, m_Ypos;
 		int m_FramebufferW, m_FramebufferH;
 		const char* m_Title;
 		const char* m_PathToIcon;
 	public:
-		Window(int width, int height,const std::string& title,bool resizalbe = true, bool decorated = true, bool focused = true, bool autoIconify = false, bool maximized = false, const std::string& pathToIcon = "") {
+		Window(int width, int height,const std::string& title,bool resizalbe = true,
+			bool decorated = true, bool focused = true, bool autoIconify = false,
+			bool maximized = false, const std::string& pathToIcon = "") {
 			if (!glfwInit()) {
 				VO_CORE_ERROR("GLFW couldn't initialize");
 			};
@@ -47,7 +50,7 @@ namespace VOEngine {
 				VO_CORE_ERROR("Error code: {} \n Description:\n {}", code, description);
 			});
 			createWindow();
-
+			
 
 		}
 		~Window() {
@@ -56,6 +59,12 @@ namespace VOEngine {
 		bool isKeyPressed(VOEngine::KeyCode key);
 		bool shouldClose();
 		GLFWwindow* getGLFWwindow();
+		int getHeight();
+		int getWidth();
+
+		int getYpos();
+		int getXpos();
+
 		void setIcon(const char* path);
 		void requestAttention();
 		void setWindowMode(int wm);
@@ -71,6 +80,8 @@ namespace VOEngine {
 			return m_FramebufferH;
 		};
 	private:
+		void updatePos();
+		void updateSize();
 		void detectMonitor();
 		void createWindow();
 	};

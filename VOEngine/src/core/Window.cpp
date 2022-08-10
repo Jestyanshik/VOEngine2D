@@ -3,6 +3,7 @@
 #include "ImGuiManager.h"
 #include "glad/glad.h"
 
+
 void VOEngine::Window::detectMonitor() {
 	//TODO
 }
@@ -16,7 +17,6 @@ void VOEngine::Window::createWindow() {
 	m_Window = glfwCreateWindow(m_Width, m_Height, m_Title, NULL, NULL);
 	glfwMakeContextCurrent(m_Window);
 	glfwSwapInterval(1);
-
 
 }
 
@@ -60,6 +60,26 @@ GLFWwindow* VOEngine::Window::getGLFWwindow() {
 	return m_Window;
 }
 
+int VOEngine::Window::getHeight() {
+	updateSize();
+	return m_Height;
+}
+
+int VOEngine::Window::getWidth() {
+	updateSize();
+	return m_Width;
+}
+
+int VOEngine::Window::getXpos() {
+	updatePos();
+	return m_Ypos; 
+}
+
+int VOEngine::Window::getYpos() {
+	updatePos();
+	return m_Xpos;
+}
+
 void VOEngine::Window::setIcon(const char* path) {
 	//TODO
 }
@@ -72,6 +92,14 @@ void VOEngine::Window::changeSize(int width, int height) {
 	m_Width = width;
 	m_Height = height;
 	glfwSetWindowSize(m_Window, width, height);
+}
+
+void VOEngine::Window::updateSize() {
+	glfwGetWindowSize(m_Window, &m_Width, &m_Height);
+}
+
+void VOEngine::Window::updatePos() {
+	glfwGetWindowPos(m_Window, &m_Xpos, &m_Ypos); 
 }
 
 void VOEngine::Window::changeTitle(const char* title) {
