@@ -9,7 +9,8 @@ int main() {
 	VOEngine::Window editorWindow = VOEngine::Window(1920, 1080, "VOEngine");
 	imgui.passVOEngineWindow(&editorWindow);
 
-	
+	auto size = editorWindow.getSize();
+	ImGui::SetNextWindowSize(size, 0);
 	imgui.createWindow([]() {
 		ImGui::Begin("VOEngine", NULL);
 		ImGui::End();

@@ -61,6 +61,8 @@ namespace VOEngine {
 		GLFWwindow* getGLFWwindow();
 		int getHeight();
 		int getWidth();
+		glm::vec2 getSize();
+
 
 		int getYpos();
 		int getXpos();

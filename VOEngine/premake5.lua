@@ -12,7 +12,8 @@ project "VOEngine"
 	files {
 		"src/**.h",
 		"src/**.cpp",
-
+		"vendor/glm/glm/**.hpp",
+		"vendor/glm/glm/**.inl"
 	}
 
 	defines
@@ -26,7 +27,8 @@ project "VOEngine"
 		"vendor/spdlog/include",
 		"vendor/GLFW/include",
 		"vendor/glad/include",
-		"vendor/ImGui"
+		"vendor/ImGui",
+		"vendor/glm/glm"
 	}
 
 	links {

@@ -70,6 +70,11 @@ int VOEngine::Window::getWidth() {
 	return m_Width;
 }
 
+glm::vec2 VOEngine::Window::getSize() {
+	updateSize();
+	return glm::vec2(m_Width, m_Height);
+}
+
 int VOEngine::Window::getXpos() {
 	updatePos();
 	return m_Ypos; 
