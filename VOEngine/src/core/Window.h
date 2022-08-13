@@ -54,6 +54,7 @@ namespace VOEngine {
 
 		}
 		~Window() {
+			VO_CORE_INFO("Window desctructed");
 			glfwDestroyWindow(m_Window);
 		}
 		bool isKeyPressed(VOEngine::KeyCode key);
