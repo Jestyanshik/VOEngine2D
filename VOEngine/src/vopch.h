@@ -14,7 +14,20 @@
 #include <unordered_set>
 #include <chrono>
 #include <cstdint>
+#include <fstream>
+#include <direct.h>
+#include <limits.h>
 
-#include "Core/Log.h"
+
+
+#include "Core/Log/Log.h"
 #include "glm.hpp"
+
+typedef glm::vec4 color;
+
+#include "Core/Rendering/Windows/Window.h"
+#include "Core/Rendering/Renderer/Renderer.h"
+#include "Core/ResourceManager.h"
+
+
 

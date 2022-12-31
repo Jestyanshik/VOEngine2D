@@ -7,3 +7,8 @@
 /bin-int/
 /.vs/
 /.git/
+
+/vendor/glad/bin/
+/vendor/glad/bin-int/
+/vendor/glad/.vs/
+/vendor/glad/.git/

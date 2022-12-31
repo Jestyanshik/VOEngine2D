@@ -1,45 +1,93 @@
 #include "vopch.h"
 #include "ResourceManager.h"
-#include "ImGuiManager.h"
-#include "Renderer.h"
-#include "Window.h"
+#include "Log/Log.h"
+#include "Rendering/Renderer/OpenGLRenderer/OpenGLRenderer.h"
+#include "Rendering/Windows/GLFWWindow/GLFWWindow.h"
+
+#include "ImGuiBackend/imgui_impl_opengl3.h"
+#include "ImGuiBackend/imgui_impl_glfw.h"
+#include "imgui.h"
+#include "glad/glad.h"
+#include "GLFW/glfw3.h"
 
 
 namespace VOEngine {
-	std::shared_ptr<ImGuiManager> ResourceManager::s_ImGuiManager;
-	std::shared_ptr<Renderer> ResourceManager::s_Renderer;
+	Renderer* ResourceManager::s_Renderer;
 	Window* ResourceManager::s_Window;
-	void(*ResourceManager::s_whileLoop)();
-	bool(*ResourceManager::s_whileLoopStopConditionFunction)();
+	std::vector<std::function<void(void)>> ResourceManager::m_RenderQueue;
+	std::string ResourceManager::s_CurrentWindow;
+	std::string ResourceManager::s_CurrentRenderer;
 
+	void ResourceManager::Init()
+	{
+		if (Log::Init())
+			VO_CORE_INFO("spdlog succesfuly initialized");
+		//Temporary code imGui should be replaced with something else
+		ImGui::CreateContext();
+		ImGuiIO& io = ImGui::GetIO();
+		ImGui::StyleColorsDark();
+		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+		//
+		
+		//TODO: Settings in .ini file
+		s_CurrentRenderer = "OpenGL";
+		s_CurrentWindow   = "GLFW";
 
-	Window* ResourceManager::createWindow(int width, int height, const std::string& title, bool resizalbe, bool decorated, bool focused, bool autoIconify, bool maximized, const std::string& pathToIcon) {
-		s_Window = new Window(width, height, title, resizalbe, decorated, focused, autoIconify, maximized, pathToIcon);
-		s_ImGuiManager->passVOEngineWindow(s_Window);
-		return s_Window;
+		if (s_CurrentWindow == "GLFW") {
+			s_Window = new GLFWWindow(1280, 720, "VOEngine application");
+			s_Window->setDecorated(true);
+			s_Window->setPosition(glm::vec2(200,200));
+			
+		}
+		if (s_CurrentRenderer == "OpenGL")
+			s_Renderer = new OpenGLRenderer();
+
+		//Temp
+		if (s_CurrentWindow == "GLFW")
+			ImGui_ImplGlfw_InitForOpenGL(((GLFWWindow*)s_Window)->getNativeWindow(), true);
+		if (s_CurrentRenderer == "OpenGL")
+			ImGui_ImplOpenGL3_Init("#version 460");
+		//Temp
 	}
 
-	void ResourceManager::createWhileLoopFunction(void(*whileLoopFunction)()) {
-		s_whileLoop = whileLoopFunction;
+	void ResourceManager::Cleanup() {
+		//Temp
+		VO_CORE_INFO("ImGui destructed");
+		if (s_CurrentRenderer == "OpenGL") 
+			ImGui_ImplOpenGL3_Shutdown();
+		if (s_CurrentWindow == "GLFW")
+			ImGui_ImplGlfw_Shutdown();
+		ImGui::DestroyContext();
+		//Temp
+		delete s_Window;
+		delete s_Renderer;
 	}
 
-	void ResourceManager::executeWhileLoop() {
-		while (!s_whileLoopStopConditionFunction()) {
+	void ResourceManager::Run() {
+		while (!s_Window->shouldClose()) {
 			s_Window->pollEvents();
-			ImGui_ImplOpenGL3_NewFrame();
-			ImGui_ImplGlfw_NewFrame();
+
+			//temp
+			if (s_CurrentRenderer == "OpenGL")
+				ImGui_ImplOpenGL3_NewFrame();
+			if (s_CurrentWindow == "GLFW")
+				ImGui_ImplGlfw_NewFrame();
+			
 			ImGui::NewFrame();
 			ImGui::DockSpaceOverViewport(NULL, ImGuiDockNodeFlags_None | ImGuiDockNodeFlags_PassthruCentralNode);
-			for (auto renderItem : s_ImGuiManager->getRenderLayer()) {
-				renderItem();
+			for (std::function<void(void)> fn : m_RenderQueue) {
+				fn();
 			}
-			int framebufferWidth = s_Window->getFramebufferWidth();
-			int framebufferHeight = s_Window->getFramebufferHeight();
-
 			ImGui::Render();
-			glfwGetFramebufferSize(s_Window->getGLFWwindow(), &framebufferWidth, &framebufferHeight);
-			s_whileLoop();
+			//temp
 
+			if (s_Window->isKeyPressed(Key::Escape)) {
+				s_Window->setShouldClose(true);
+			}
+			s_Renderer->render();
+
+			//temp
 			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 			if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
@@ -49,18 +97,12 @@ namespace VOEngine {
 				ImGui::RenderPlatformWindowsDefault();
 				glfwMakeContextCurrent(backup_current_context);
 			}
+			ImGui::EndFrame();
+			//temp
 
 			s_Window->swapBuffers();
 		}
 	}
-
-	void ResourceManager::setWhileLoopStopCondition(bool(*stopConditionFunction)()) {
-		s_whileLoopStopConditionFunction = stopConditionFunction;
-	}
-
-
-
-
 
 
 }

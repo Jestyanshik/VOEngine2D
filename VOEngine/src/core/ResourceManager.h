@@ -1,37 +1,32 @@
 #pragma once
-#include "ImGuiManager.h"
-#include "Renderer.h"
-#include "Window.h"
+#include "Rendering/Renderer/Renderer.h"
+#include "Rendering/Renderer/OpenGLRenderer/OpenGLRenderer.h"
+#include "Rendering/Windows/Window.h"
+
+
 
 namespace VOEngine {
+	
 	class ResourceManager {
 	public:
-		static void Init() {
-			s_ImGuiManager = std::make_shared<ImGuiManager>();
-			s_Renderer = std::make_shared<Renderer>();
-		};
-		static void Cleanup() {
-			delete s_Window;
-		}
-		static Window* createWindow(int width, int height, const std::string& title, bool resizalbe = true,
-			bool decorated = true, bool focused = true, bool autoIconify = false,
-			bool maximized = false, const std::string& pathToIcon = "");
-		static std::shared_ptr<ImGuiManager>& getImGuiManager() { return s_ImGuiManager;}
-		static std::shared_ptr<Renderer>& getRenderer() { return s_Renderer;}
-		static Window* getWindow() { return s_Window;}
-		static void testFunc() { if (s_Window != nullptr) VO_CORE_INFO(s_Window->getHeight());}
-		static void createWhileLoopFunction(void (*whileLoopFunction)());
-		static void setWhileLoopStopCondition(bool (*stopConditionFunction)());
-		static void executeWhileLoop();
+		
+		static void Init();
+		static void Cleanup();
+		static void Run();
+		static Window*   getWindow()   { return s_Window; };
+		static Renderer* getRenderer() { return s_Renderer; };
+		static void		 addWindow(std::function<void(void)> function) { m_RenderQueue.push_back(function);};
 
-	private:		
-		static std::shared_ptr<ImGuiManager> s_ImGuiManager;
-		static std::shared_ptr<Renderer> s_Renderer;
+	private:
+		static std::string currentUIRenderer;
+		static Renderer* s_Renderer;
 		static Window* s_Window;
-		static void(*s_whileLoop)();
-		static bool(*s_whileLoopStopConditionFunction)();
-	public:
+		static std::vector<std::function<void(void)>> m_RenderQueue;
+		static std::string s_CurrentWindow;
+		static std::string s_CurrentRenderer;
 
+	public:
+		
 	};
 }
 

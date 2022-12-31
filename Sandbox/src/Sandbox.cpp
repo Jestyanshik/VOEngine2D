@@ -1,40 +1,56 @@
 #include "vopch.h"
 #include "VOEngine.h"
 
-
+using namespace VOEngine;
 
 int main() {
-	VOEngine::Init();
-	
-	VOEngine::ImGuiManager& imgui = *VOEngine::ResourceManager::getImGuiManager();
-	VOEngine::Renderer& renderer = *VOEngine::ResourceManager::getRenderer();
-	VOEngine::Window& editorWindow = *VOEngine::ResourceManager::createWindow(1920, 1080, "VOEngine");
+	ResourceManager::Init();
 	
 
-	VOEngine::ResourceManager::testFunc();
+	ResourceManager::addWindow([]() {
+		static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_PassthruCentralNode;
+		ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
 
-	imgui.createWindow([]() {
-		ImGui::Begin("VOEngine", NULL);
-		static glm::vec3 color;
-		ImGui::ColorEdit3("Clear color", (float*)&color);
-		VOEngine::ResourceManager::getRenderer()->fillWindow(color.x, color.y, color.z, 1);
+		ImGuiViewport* viewport = ImGui::GetMainViewport();
+		ImGui::SetNextWindowPos(viewport->Pos);
+		ImGui::SetNextWindowSize(viewport->Size);
+		ImGui::SetNextWindowViewport(viewport->ID);
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+		window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
+		window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
+
+		if (dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode)
+			window_flags |= ImGuiWindowFlags_NoBackground;
+
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+		ImGui::Begin("DockSpace", nullptr, window_flags);
+		ImGui::PopStyleVar();
+		ImGui::PopStyleVar(2);
+
+		// DockSpace
+		ImGuiIO& io = ImGui::GetIO();
+		if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable) {
+			ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
+			ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
+		}
 		ImGui::End();
-		});
-	imgui.createWindow([]() {
-		ImGui::Begin("Alolololoasdsad");
-		static char buf[10000];
-		ImGui::InputText("Text", buf, sizeof(buf));
+
+		ImGui::Begin("Left");
+		ImGui::Text("Hello, left!");
 		ImGui::End();
-		});
-	VOEngine::ResourceManager::createWhileLoopFunction([]() {
-		if (VOEngine::ResourceManager::getWindow()->isKeyPressed(VOEngine::Key::Escape)) VOEngine::ResourceManager::getWindow()->closeWindow();
-		if (VOEngine::ResourceManager::getWindow()->isKeyPressed(VOEngine::Key::W)) VOEngine::ResourceManager::getWindow()->setWindowMode(WindowModes::windowed);
-		});
 
-	VOEngine::ResourceManager::setWhileLoopStopCondition([]() { return VOEngine::ResourceManager::getWindow()->shouldClose(); });
-	VOEngine::ResourceManager::executeWhileLoop();
+		ImGui::Begin("Down");
+		ImGui::Text("Hello, down!");
+		ImGui::End();
+	});
 
-	VOEngine::Cleanup();
+	ResourceManager::getRenderer()->fill(color(1, 0, 0, 1));
+
+	ResourceManager::Run();
+	ResourceManager::Cleanup();
+	
+
 	return 0;
 }
 
