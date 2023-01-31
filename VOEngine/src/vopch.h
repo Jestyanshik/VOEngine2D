@@ -6,6 +6,8 @@
 #include <algorithm>
 #include <functional>
 
+#include <io.h>
+#include <stdlib.h>
 #include <string>
 #include <sstream>
 #include <array>
@@ -17,11 +19,22 @@
 #include <fstream>
 #include <direct.h>
 #include <limits.h>
+#include <filesystem>
+#ifdef _WIN32 
+#include <Windows.h>
 
+#endif
 
+//SoundLibrary
+#include "AL/al.h"
+//Audio loading library
+#include "sndfile.h"
+#include "sndfile.hh"
 
 #include "Core/Log/Log.h"
+#include "GLFW/glfw3.h"
 #include "glm.hpp"
+#include <imgui.h>
 
 typedef glm::vec4 color;
 

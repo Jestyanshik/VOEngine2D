@@ -74,7 +74,7 @@ void VOEngine::GLFWWindow::setIcon(const char* path) {
 
 void VOEngine::GLFWWindow::setPosition(glm::vec2 position) {
 	Window::setPosition(position);
-	glfwSetWindowPos(m_Window, position.x, position.y);
+	glfwSetWindowPos(m_Window, (int)position.x, (int)position.y);
 }
 
 void VOEngine::GLFWWindow::setShouldClose(bool value) {

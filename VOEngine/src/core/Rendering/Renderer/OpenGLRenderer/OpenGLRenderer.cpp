@@ -13,8 +13,9 @@ void VOEngine::OpenGLRenderer::doFill(color color) {
 
 void VOEngine::OpenGLRenderer::render() {
 	Renderer::render();
-
 }
+
+
 
 const char* VOEngine::OpenGLRenderer::getVersion() {
 	return (char*)glGetString(GL_VERSION);

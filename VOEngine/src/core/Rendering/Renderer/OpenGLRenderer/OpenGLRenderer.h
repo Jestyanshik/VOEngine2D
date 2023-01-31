@@ -1,7 +1,7 @@
 #pragma once
 #include "Shaders/Shader.h"
 #include "../Renderer.h"
-#include "../../../ResourceManager.h"
+#include "core/ResourceManager.h"
 
 
 namespace VOEngine { 

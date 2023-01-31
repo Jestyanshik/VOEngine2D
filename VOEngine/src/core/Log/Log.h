@@ -18,8 +18,7 @@ namespace VOEngine {
 	};
 }
 
-
-#ifdef LOG
+//#ifdef LOG
 #define VO_CORE_INFO(...) VOEngine::Log::getCoreLogger()->info(__VA_ARGS__)
 #define VO_CORE_WARN(...) VOEngine::Log::getCoreLogger()->warn(__VA_ARGS__)
 #define VO_CORE_ERROR(...) VOEngine::Log::getCoreLogger()->error(__VA_ARGS__)
@@ -35,6 +34,6 @@ namespace VOEngine {
 #define VO_ASSERT(value) if (value == 0) {VOEngine::Log::getClientLogger()->error("Assertion failed in {} at line {}", __FUNCTION__, __LINE__);}
 
 
-#else
-#define VO_CORE_INFO
-#endif
+//#else
+//#define VO_CORE_INFO
+//#endif

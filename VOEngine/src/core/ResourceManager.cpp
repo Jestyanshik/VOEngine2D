@@ -31,6 +31,7 @@ namespace VOEngine {
 		//
 		
 		//TODO: Settings in .ini file
+		//TODO: Base class for VOEngnie applications
 		s_CurrentRenderer = "OpenGL";
 		s_CurrentWindow   = "GLFW";
 
