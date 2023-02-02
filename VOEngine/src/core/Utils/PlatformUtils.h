@@ -9,7 +9,7 @@ namespace VOEngine {
 		static std::vector<std::wstring> OpenFilesDialog(const char* filter);
 		static std::wstring OpenFolderDialog(const char* title);
 		//Should return value more than 32 into outDone variable
-		static void executeCommand(const std::string& file,const std::string& command, unsigned long& outDone);
+		static void executeCommand(const std::string& file,const std::string& command);
 		static void executeMultipleCommands(const std::string& file, const std::vector<std::string>& commands, unsigned long& outDone);
 
 	};

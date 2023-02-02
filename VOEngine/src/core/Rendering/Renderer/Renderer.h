@@ -1,7 +1,5 @@
 #pragma once
 
-
-
 namespace VOEngine {
 	class Renderer {
 	public:
@@ -32,7 +30,6 @@ namespace VOEngine {
 		virtual void doDrawCircle() = 0;
 		virtual void doDrawArc() = 0;
 		virtual void doDrawBezier() = 0;
-		
 	};
 }
 

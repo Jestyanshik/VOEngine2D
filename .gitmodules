@@ -10,3 +10,9 @@
 [submodule "VOEngine/vendor/glm"]
 	path = VOEngine/vendor/glm
 	url = https://github.com/g-truc/glm.git
+[submodule "VOEngine/vendor/OpenAL"]
+	path = VOEngine/vendor/OpenAL
+	url = https://github.com/kcat/openal-soft.git
+[submodule "VOEngine/vendor/sndfile"]
+	path = VOEngine/vendor/sndfile
+	url = https://github.com/libsndfile/libsndfile.git

@@ -13,11 +13,11 @@ project "VOEngine"
 		"src/**.h",
 		"src/**.cpp",
 		"vendor/glm/glm/**.hpp",
-		"vendor/glm/glm/**.inl"
+		"vendor/glm/glm/**.inl",
+		"vendor/sndfile/include/ **.h"
 	}
 
-	defines
-	{
+	defines {
 		"_CRT_SECURE_NO_WARNINGS",
 		"GLFW_INCLUDE_NONE"
 	}
@@ -28,14 +28,21 @@ project "VOEngine"
 		"vendor/GLFW/include",
 		"vendor/glad/include",
 		"vendor/ImGui",
-		"vendor/glm/glm"
+		"vendor/glm/glm",
+		"vendor/OpenAL/include",
+		"vendor/sndfile/include"
+	}
+
+	libdirs {
+		"libs/OpenAL"
 	}
 
 	links {
 		"GLFW",
 		"Glad",
 		"opengl32.lib",
-		"ImGui"
+		"ImGui",
+		"OpenAL32.lib"
 	}
 
    filter "configurations:Debug"

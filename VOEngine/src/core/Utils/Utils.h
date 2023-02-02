@@ -1,10 +1,15 @@
+#pragma once
 #include "vopch.h"
 
 
 namespace VOEngine {
 	static std::string WideStringToString(const std::wstring& str) {
-		std::string buffer(new char[sizeof(str)]);
-		wcstombs_s(nullptr, (char *)buffer.c_str(), buffer.length() - 1, str.c_str(), _TRUNCATE);
-		return buffer;
+        std::string strTo;
+        char* szTo = new char[str.length() + 1];
+        szTo[str.size()] = '\0';
+        WideCharToMultiByte(CP_ACP, 0, str.c_str(), -1, szTo, (int)str.length(), NULL, NULL);
+        strTo = szTo;
+        delete[] szTo;
+        return strTo;
 	}
 }

@@ -3,6 +3,9 @@
 #include "Log/Log.h"
 #include "Rendering/Renderer/OpenGLRenderer/OpenGLRenderer.h"
 #include "Rendering/Windows/GLFWWindow/GLFWWindow.h"
+#include "Sound/SoundEngine.h"
+#include "Sound/OpenAL/OpenALSoundEngine.h"
+
 
 #include "ImGuiBackend/imgui_impl_opengl3.h"
 #include "ImGuiBackend/imgui_impl_glfw.h"
@@ -34,6 +37,12 @@ namespace VOEngine {
 		//TODO: Base class for VOEngnie applications
 		s_CurrentRenderer = "OpenGL";
 		s_CurrentWindow   = "GLFW";
+		SoundEngine* se = new OpenALSoundEngine();
+		std::vector<std::string> devices = se->getAvailableDevices();
+		for (std::string device : devices) {
+			VO_CORE_INFO(device);
+		}
+		delete se;
 
 		if (s_CurrentWindow == "GLFW") {
 			s_Window = new GLFWWindow(1280, 720, "VOEngine application");

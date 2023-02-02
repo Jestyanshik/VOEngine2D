@@ -22,11 +22,11 @@
 #include <filesystem>
 #ifdef _WIN32 
 #include <Windows.h>
-
 #endif
 
 //SoundLibrary
 #include "AL/al.h"
+#include "AL/alc.h"
 //Audio loading library
 #include "sndfile.h"
 #include "sndfile.hh"
@@ -40,6 +40,7 @@ typedef glm::vec4 color;
 
 #include "Core/Rendering/Windows/Window.h"
 #include "Core/Rendering/Renderer/Renderer.h"
+#include "Core/Utils/Utils.h"
 #include "Core/ResourceManager.h"
 
 

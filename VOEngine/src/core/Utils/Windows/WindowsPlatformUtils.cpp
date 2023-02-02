@@ -128,21 +128,17 @@ namespace VOEngine {
 		CoUninitialize();
 		return outFolderPath;
 	}
-	void PlatformUtils::executeCommand(const std::string& file, const std::string& command, unsigned long& outDone) {
+	void PlatformUtils::executeCommand(const std::string& file, const std::string& command) {
 		SHELLEXECUTEINFOA see;
 		std::string cmd = " /c \"" + command + "\"";
 		ZeroMemory(&see, sizeof(see));
 		see.cbSize = sizeof(see);
-		see.fMask = SEE_MASK_NOCLOSEPROCESS;
+		see.fMask = 0;
 		see.lpVerb = "open";
 		see.lpFile = file != "" ? file.c_str() : "cmd";
 		see.lpParameters = file != "" ? command.c_str() : cmd.c_str();
 		see.nShow = SW_SHOWNORMAL;
-		see.hInstApp = NULL;
 		ShellExecuteExA(&see);
-		WaitForSingleObject(see.hInstApp, INFINITE);
-		GetExitCodeProcess(see.hInstApp, &outDone);
-		CloseHandle(see.hInstApp);
 	}
 	void PlatformUtils::executeMultipleCommands(const std::string& file, const std::vector<std::string>& commands, unsigned long& outDone) {
 		std::string commandQuery = " /c ";

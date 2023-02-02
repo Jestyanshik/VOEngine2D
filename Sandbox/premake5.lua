@@ -9,7 +9,7 @@ project "Sandbox"
 
 	files {
 		"src/**.h",
-		"src/**.cpp"	
+		"src/**.cpp"
 	}
 
 	includedirs {
@@ -19,8 +19,9 @@ project "Sandbox"
 		"%{wks.location}/VOEngine/vendor/GLFW/include",
 		"%{wks.location}/VOEngine/vendor/Glad/include",
 		"%{wks.location}/VOEngine/vendor/ImGui",
-		"%{wks.location}/VOEngine/vendor/glm/glm"
-
+		"%{wks.location}/VOEngine/vendor/glm/glm",
+		"%{wks.location}/VOEngine/vendor/OpenAL/include",
+		"%{wks.location}/VOEngine/vendor/sndfile/include"
 	}
 
    filter "configurations:Debug"
