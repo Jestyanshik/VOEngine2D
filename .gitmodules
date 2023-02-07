@@ -13,6 +13,6 @@
 [submodule "VOEngine/vendor/OpenAL"]
 	path = VOEngine/vendor/OpenAL
 	url = https://github.com/kcat/openal-soft.git
-[submodule "VOEngine/vendor/sndfile"]
-	path = VOEngine/vendor/sndfile
-	url = https://github.com/libsndfile/libsndfile.git
+[submodule "VOEngine/vendor/yaml-cpp"]
+	path = VOEngine/vendor/yaml-cpp
+	url = https://github.com/Jayko321/yaml-cpp.git
