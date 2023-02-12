@@ -3,31 +3,27 @@
 
 using namespace VOEngine;
 
-class Application {
+class ExampleApplication : public Application {
 public:
-	Application(){
-		ResourceManager::Init();
-	}
-	~Application() {
-		ResourceManager::Cleanup();
-	}
-	void run() {
-		BeforeRun();
-		ResourceManager::Run();
-	}
-	void BeforeRun() {
-		ResourceManager::addWindow([]() {
+	void OnImGuiRender() override {
 		ImGui::Begin("Main Window");
 		if (ImGui::Button("Cool button")) {
-			ImGui::Text("hahas");
+			ImGui::Text("123");
 		}
 		ImGui::End();
-		});
 	}
+
+	void OnRender() override {
+	}
+
+
+	void OnStartup() override {
+	}
+
 };
 
 int main() {
-	Application app;
+	ExampleApplication app;
 	app.run();
 	return 0;
 }
