@@ -5,7 +5,7 @@ namespace VOEngine {
 	public:
 		Renderer() {};
 		void fill(color AColor) { 
-			m_RenderQueue.push_back([this, AColor]() {doFill(AColor);});
+			//m_RenderQueue.push_back([this, AColor]() {doFill(AColor);});
 		};
 		void drawRectangle()   {};
 		void drawLine()        {};
@@ -14,14 +14,13 @@ namespace VOEngine {
 		void drawArc()         {};
 		void drawBezier()      {};
 		virtual void render()  {
-			fill(color(0,0,0,1));
-			for (std::function<void(void)> fn: m_RenderQueue) {
+			doFill(color(0,0,0,1));
+			for (const std::function<void(void)>& fn: m_RenderQueue) {
 				fn();
 			}
 		};
 	private:
 		std::vector<std::function<void(void)>> m_RenderQueue;
-
 	protected:
 		virtual void doFill(color color) = 0;
 		virtual void doDrawRectangle() = 0;

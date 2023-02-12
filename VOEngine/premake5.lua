@@ -13,8 +13,7 @@ project "VOEngine"
 		"src/**.h",
 		"src/**.cpp",
 		"vendor/glm/glm/**.hpp",
-		"vendor/glm/glm/**.inl",
-		"vendor/sndfile/include/ **.h"
+		"vendor/glm/glm/**.inl"
 	}
 
 	defines {
@@ -29,20 +28,22 @@ project "VOEngine"
 		"vendor/glad/include",
 		"vendor/ImGui",
 		"vendor/glm/glm",
+		"vendor/yaml-cpp/include",
 		"vendor/OpenAL/include",
 		"vendor/sndfile/include"
 	}
 
 	libdirs {
-		"libs/OpenAL"
+		"libs"
 	}
 
 	links {
 		"GLFW",
 		"Glad",
-		"opengl32.lib",
+		"yaml-cpp",
 		"ImGui",
-		"OpenAL32.lib"
+		"sndfile",
+		"OpenAL32"
 	}
 
    filter "configurations:Debug"
@@ -53,5 +54,5 @@ project "VOEngine"
       defines { "NDEBUG" }
       optimize "On"
 
-	filter "system:windows"
-		systemversion "latest"
+   filter "system:windows"
+      systemversion "latest"

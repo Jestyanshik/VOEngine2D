@@ -2,8 +2,8 @@
 #ifdef _WIN32
 #include "../PlatformUtils.h"
 #include "../Utils.h"
-#include "core/ResourceManager.h"
-#include "core/Rendering/Windows/GLFWWindow/GLFWWindow.h"
+#include "Core/ResourceManager.h"
+#include "Core/Window/GLFWWindow/GLFWWindow.h"
 
 #include <commdlg.h>
 #include <shobjidl_core.h>
@@ -12,6 +12,9 @@
 #include <GLFW/glfw3native.h>
 
 namespace VOEngine {
+	std::thread PlatformUtils::m_CommandThread, PlatformUtils::m_LoopThread;
+	bool PlatformUtils::s_StopExecution;
+
 	//TODO: Add support for filters
 	std::wstring PlatformUtils::OpenFileDialog(const char* filter) {
 		std::wstring outFolderPath = L"";
@@ -129,33 +132,32 @@ namespace VOEngine {
 		return outFolderPath;
 	}
 	void PlatformUtils::executeCommand(const std::string& file, const std::string& command) {
-		SHELLEXECUTEINFOA see;
-		std::string cmd = " /c \"" + command + "\"";
-		ZeroMemory(&see, sizeof(see));
-		see.cbSize = sizeof(see);
-		see.fMask = 0;
-		see.lpVerb = "open";
-		see.lpFile = file != "" ? file.c_str() : "cmd";
-		see.lpParameters = file != "" ? command.c_str() : cmd.c_str();
-		see.nShow = SW_SHOWNORMAL;
-		ShellExecuteExA(&see);
-	}
-	void PlatformUtils::executeMultipleCommands(const std::string& file, const std::vector<std::string>& commands, unsigned long& outDone) {
-		std::string commandQuery = " /c ";
-		commandQuery += "\"";
-		for (std::string command : commands) {
-			commandQuery += command;
-			commandQuery += " && ";
+		if (!m_CommandThread.joinable()) {
+			m_CommandThread = std::thread([file, command]() {
+				system(command.c_str());
+			});
 		}
-		commandQuery.pop_back();
-		commandQuery.pop_back();
-		commandQuery.pop_back();
-		commandQuery.pop_back();
-		commandQuery += "\"";
-
-		VO_CORE_INFO(commandQuery);
-		ShellExecuteA(NULL, "open", "cmd",
-			commandQuery.c_str(), 0, SW_SHOWNORMAL);
+	}
+	void PlatformUtils::executeMultipleCommands(const std::string& file, const std::vector<std::string>& commands) {
+		if (s_StopExecution) {
+			try {
+				m_LoopThread.join();
+			}
+			catch (const std::exception&) {}
+			s_StopExecution = false;
+		}
+		m_LoopThread = std::thread([file, commands]() {
+			for (const std::string& command : commands) {
+				if (s_StopExecution) {
+					break;
+				}
+				VO_CORE_INFO(command);
+				m_CommandThread = std::thread([file, command]() {
+					system(command.c_str());
+				});
+				m_CommandThread.join();
+			}
+		});
 	}
 }
 #endif

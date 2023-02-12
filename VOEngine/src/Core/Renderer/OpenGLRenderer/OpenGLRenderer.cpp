@@ -3,7 +3,7 @@
 #include "glad/glad.h"
 #include "glm.hpp"
 
-#include "./Core/Rendering/Windows/GLFWWindow/GLFWWindow.h"
+#include "Core/Window/Window.h"
 
 
 void VOEngine::OpenGLRenderer::doFill(color color) {

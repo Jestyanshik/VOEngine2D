@@ -12,3 +12,8 @@
 /VOEngine/vendor/glad/bin-int/
 /VOEngine/vendor/glad/.vs/
 /VOEngine/vendor/glad/.git/
+*.log
+*.log
+*.tlog
+*.lastbuildstate
+*.idb

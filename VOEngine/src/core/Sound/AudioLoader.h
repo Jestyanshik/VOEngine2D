@@ -3,15 +3,16 @@
 namespace VOEngine {
 	class Sound {
 	public:
-		Sound(const std::string& fileName);
-		Sound(const std::wstring& fileName);
+		Sound(const std::filesystem::path& fileName);
 		~Sound() = default;
-	private:
-		std::string m_Filename;
-		std::vector<short> m_SoundData;
-		uint8_t m_Channels;
-		int32_t m_SampleRate;
-		uint8_t m_BitsPerSample;
-		size_t m_Size;
+	public:
+		bool IsPlaying = false;
+		std::string Filename;
+		std::vector<short> SoundData = { 0 };
+		int Format;
+		uint8_t Channels;
+		int32_t SampleRate;
+		int64_t BitsPerSample;
+		size_t Size;
 	};
 }

@@ -7,7 +7,7 @@
 #include <functional>
 
 #include <io.h>
-#include <stdlib.h>
+#include <cstdlib>
 #include <string>
 #include <sstream>
 #include <array>
@@ -18,8 +18,9 @@
 #include <cstdint>
 #include <fstream>
 #include <direct.h>
-#include <limits.h>
+#include <climits>
 #include <filesystem>
+#include <future>
 #ifdef _WIN32 
 #include <Windows.h>
 #endif
@@ -31,17 +32,17 @@
 #include "sndfile.h"
 #include "sndfile.hh"
 
-#include "Core/Log/Log.h"
+#include "yaml-cpp/yaml.h"
+
 #include "GLFW/glfw3.h"
 #include "glm.hpp"
 #include <imgui.h>
+#include "Core/ImGuiBackend/imgui_impl_opengl3.h"
+#include "Core/ImGuiBackend/imgui_impl_glfw.h"
 
 typedef glm::vec4 color;
 
-#include "Core/Rendering/Windows/Window.h"
-#include "Core/Rendering/Renderer/Renderer.h"
-#include "Core/Utils/Utils.h"
-#include "Core/ResourceManager.h"
+#include "Core/Common/Log.h"
 
 
 
