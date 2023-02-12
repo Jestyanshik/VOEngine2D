@@ -5,7 +5,7 @@ namespace VOEngine {
 	class SettingsManager {
 	public:
 		SettingsManager() {
-			m_Config = YAML::LoadFile("Settings\\settings.yaml");
+			m_Config = YAML::LoadFile("settings.yaml");
 		}
 		~SettingsManager() {
 			
@@ -41,7 +41,7 @@ namespace VOEngine {
 		void SetValue(const std::pair<std::string, std::string> pair) {
 			auto applicationNode = m_Config["Application"];
 			applicationNode[pair.first] = pair.second;
-			std::ofstream fout("Settings\\settings.yaml");
+			std::ofstream fout("settings.yaml");
 			fout << m_Config;
 		}
 
@@ -49,7 +49,7 @@ namespace VOEngine {
 		void SetNodeValue(const std::string& node, const std::string& key, T value) {
 			auto applicationNode = m_Config[node];
 			applicationNode[key] = value;
-			std::ofstream fout("Settings\\settings.yaml");
+			std::ofstream fout("settings.yaml");
 			fout << m_Config;
 		};
 	private:

@@ -2,12 +2,4 @@ Application:
   WindowLibrary: GLFW
   Renderer: OpenGL
   SoundEngine: OpenAL
-  Name: Anime
-  mkvPath: S:\Programs\MKVToolNix\mkvmerge.exe
-Window:
-  Size:
-    - 1314
-    - 722
-  Pos:
-    - -1848
-    - 351
+  Name: ExampleApplication
