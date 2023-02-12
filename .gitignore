@@ -17,3 +17,8 @@
 *.tlog
 *.lastbuildstate
 *.idb
+*.pdb
+*.idb
+*.tlog
+*.lastbuildstate
+*.obj
