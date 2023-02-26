@@ -1,7 +1,6 @@
 #include "vopch.h"
 #include "ResourceManager.h"
 #include "Common/Log.h"
-#include "Renderer/OpenGLRenderer/OpenGLRenderer.h"
 #include "Window/GLFWWindow/GLFWWindow.h"
 #include "Sound/SoundEngine.h"
 #include "Sound/OpenAL/OpenALSoundEngine.h"
@@ -9,10 +8,9 @@
 
 
 namespace VOEngine {
-	Renderer* ResourceManager::s_Renderer;
 	Window* ResourceManager::s_Window;
-	SoundEngine* ResourceManager::s_SoundEngine;
 	SettingsManager* ResourceManager::s_Settings;
+	Scene* ResourceManager::s_Scene;
 
 	void ResourceManager::Init() {
 		if (Log::Init())
@@ -24,8 +22,7 @@ namespace VOEngine {
 		ImGui::StyleColorsDark();
 		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
-		if (s_Settings->GetValue("SoundEngine") == "OpenAL")
-			s_SoundEngine = new OpenALSoundEngine();
+
 
 		std::vector<std::string> strSize = s_Settings->GetNodeSequence("Window", "Size");
 		glm::ivec2 size;
@@ -40,8 +37,7 @@ namespace VOEngine {
 		else pos = { 100, 100 };
 		s_Window->setPosition(pos);
 
-		if (s_Settings->GetValue("Renderer") == "OpenGL")
-			s_Renderer = new OpenGLRenderer();
+		s_Scene = new Scene(s_Window->getSize());
 
 		//Temp
 		if (s_Settings->GetValue("WindowLibrary") == "GLFW")
@@ -67,9 +63,8 @@ namespace VOEngine {
 		ImGui::DestroyContext();
 		//Temp
 		delete s_Window;
-		delete s_Renderer;
-		delete s_SoundEngine;
 		delete s_Settings;
+		delete s_Scene;
 	}
 
 	void ResourceManager::collectData() {

@@ -1,7 +1,5 @@
 #include "vopch.h"
 #include "GLFWWindow.h"
-#include "glad/glad.h"
-
 
 void VOEngine::GLFWWindow::detectMonitor() {
 	//TODO

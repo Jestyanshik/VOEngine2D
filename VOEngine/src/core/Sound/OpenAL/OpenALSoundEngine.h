@@ -6,7 +6,7 @@ namespace VOEngine {
 	class OpenALSound : public Sound {
 	public:
 		OpenALSound(const std::filesystem::path& fileName) : Sound(fileName) {
-
+			Buffer = 0;
 		}
 		ALuint Buffer;
 	};

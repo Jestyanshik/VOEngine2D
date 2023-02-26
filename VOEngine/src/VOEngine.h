@@ -15,9 +15,7 @@ namespace VOEngine {
 	public:
 		Application(){
 			ResourceManager::Init();
-			m_Renderer = ResourceManager::getRenderer();
 			m_Window = ResourceManager::getWindow();
-			m_SoundEngine = ResourceManager::getSoundEngine();
 			m_Settings = ResourceManager::getSettings();
 		}
 		virtual void OnImGuiRender() = 0;
@@ -29,15 +27,11 @@ namespace VOEngine {
 			OnCleanup();
 		}
 	protected:
-		Renderer* m_Renderer;
 		Window* m_Window;
-		SoundEngine* m_SoundEngine;
 		SettingsManager* m_Settings;
 	private:
 		void OnCleanup() {
-			m_Renderer = nullptr;
 			m_Window = nullptr;
-			m_SoundEngine = nullptr;
 			m_Settings = nullptr;
 			ResourceManager::Cleanup();
 		};
@@ -89,7 +83,7 @@ namespace VOEngine {
 				if (m_Window->isKeyPressed(Key::Escape)) {
 					m_Window->setShouldClose(true);
 				}
-				m_Renderer->render();
+				//m_Renderer->render();
 				//temp
 				ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 

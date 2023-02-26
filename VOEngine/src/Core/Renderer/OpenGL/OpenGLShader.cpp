@@ -1,37 +1,34 @@
 #include "vopch.h"
-#include "Shader.h"
-#include "glad/glad.h"
+#include "OpenGLShader.h"
 
-Shader::Shader(const std::string& vertexShaderPath, const std::string& fragmentShaderPath) {
-	m_VertexShaderString = readFileAsString(vertexShaderPath);
-    m_FragmentShaderString = readFileAsString(fragmentShaderPath);
+OpenGLShader::OpenGLShader(const std::filesystem::path& vertexShaderPath, const std::filesystem::path& fragmentShaderPath)
+    : Shader(vertexShaderPath, fragmentShaderPath) {
+    m_FragmentShaderString = readFileAsString(fragmentShaderPath.string());
+	m_VertexShaderString = readFileAsString(vertexShaderPath.string());
 
-    unsigned int vertexShader = compileShader(GL_VERTEX_SHADER, m_VertexShaderString);
-    assert (vertexShader != 0);
+	unsigned int vertexShader = compileShader(GL_VERTEX_SHADER, m_VertexShaderString);
     unsigned int fragmentShader = compileShader(GL_FRAGMENT_SHADER, m_FragmentShaderString);
-    assert(fragmentShader != 0);
 
-
-    m_Program = glCreateProgram();
-    glAttachShader(m_Program, vertexShader);
-    glAttachShader(m_Program, fragmentShader);
-    glLinkProgram(m_Program);
-    glValidateProgram(m_Program);
+    m_ID = glCreateProgram();
+    glAttachShader(m_ID, vertexShader);
+    glAttachShader(m_ID, fragmentShader);
+    glLinkProgram(m_ID);
+    glValidateProgram(m_ID);
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
-
 }
 
-Shader::~Shader() {
+OpenGLShader::~OpenGLShader() {
 }
 
-void Shader::use() {
-    glUseProgram(m_Program);
+void OpenGLShader::use() {
+    glUseProgram(m_ID);
 }
 
-unsigned int Shader::compileShader(unsigned int type, const std::string& source) {
+unsigned int OpenGLShader::compileShader(unsigned int type, const std::string& source) {
     unsigned int id = glCreateShader(type);
     const char* src = source.c_str();
+    VO_CORE_INFO(src);
     glShaderSource(id, 1, &src, nullptr);
     glCompileShader(id);
 
@@ -47,12 +44,10 @@ unsigned int Shader::compileShader(unsigned int type, const std::string& source)
         return 0;
     }
 
-
     return id;
 }
 
-std::string Shader::readFileAsString(std::string_view filename) {
-	
+std::string OpenGLShader::readFileAsString(std::string_view filename) {
     constexpr auto read_size = std::size_t(4096);
     auto stream = std::ifstream(filename.data());
     stream.exceptions(std::ios_base::badbit);

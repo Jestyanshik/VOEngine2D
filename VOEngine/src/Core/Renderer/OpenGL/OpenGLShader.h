@@ -1,15 +1,14 @@
 #pragma once
-#include "../../Shaders/BaseShader.h"
+#include "../Shader.h"
 
 
-class Shader : BaseShader{
+class OpenGLShader : public Shader{
 public:
-	Shader(const std::string& vertexShaderPath, const std::string& fragmentShaderPath);
-	~Shader();
-	const unsigned int getProgram() { return m_Program; };
+	OpenGLShader(const std::filesystem::path& vertexShaderPath,
+		const std::filesystem::path& fragmentShaderPath);
+	~OpenGLShader();
 	void use();
 private:
-	unsigned int m_Program;
 	std::string m_VertexShaderString;
 	std::string m_FragmentShaderString;
 

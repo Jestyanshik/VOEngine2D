@@ -33,7 +33,7 @@
 #include "sndfile.hh"
 
 #include "yaml-cpp/yaml.h"
-
+#include "glad/glad.h"
 #include "GLFW/glfw3.h"
 #include "glm.hpp"
 #include <imgui.h>
