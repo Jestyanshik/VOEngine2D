@@ -42,6 +42,7 @@
 
 typedef glm::vec4 color;
 
+#include "Core/Common/Consts.h"
 #include "Core/Common/Log.h"
 
 

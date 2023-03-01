@@ -1,5 +1,12 @@
-Application:
-  WindowLibrary: GLFW
-  Renderer: OpenGL
-  SoundEngine: OpenAL
-  Name: ExampleApplication
+"Application":
+  "WindowLibrary": "GLFW"
+  "Renderer": "OpenGL"
+  "SoundEngine": "OpenAL"
+  "Name": "ExampleApplication"
+"Window":
+  "Size":
+    - "1288"
+    - "720"
+  "Pos":
+    - "-1842"
+    - "484"

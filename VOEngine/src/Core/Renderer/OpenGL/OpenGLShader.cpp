@@ -19,10 +19,7 @@ OpenGLShader::OpenGLShader(const std::filesystem::path& vertexShaderPath, const 
 }
 
 OpenGLShader::~OpenGLShader() {
-}
-
-void OpenGLShader::use() {
-    glUseProgram(m_ID);
+    glDeleteProgram(m_ID);
 }
 
 unsigned int OpenGLShader::compileShader(unsigned int type, const std::string& source) {

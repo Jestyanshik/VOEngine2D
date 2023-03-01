@@ -17,12 +17,7 @@ namespace VOEngine {
 
 	//TODO: Add support for filters
 	std::wstring PlatformUtils::OpenFileDialog(const char* filter) {
-		std::wstring outFolderPath = L"";
-		Window* wnd = ResourceManager::getWindow();
-		HWND hwnd = nullptr;
-		if (wnd->getName() == "GLFWWindow") {
-			HWND hwnd = glfwGetWin32Window(((GLFWWindow*)wnd)->getNativeWindow());
-		}
+		std::wstring outFolderPath;
 		HRESULT hr = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED |
 			COINIT_DISABLE_OLE1DDE);
 
@@ -53,11 +48,6 @@ namespace VOEngine {
 	}
 	std::vector<std::wstring> PlatformUtils::OpenFilesDialog(const char* filter) {
 		std::vector<std::wstring> outFilesPath;
-		Window* wnd = ResourceManager::getWindow();
-		HWND hwnd = nullptr;
-		if (wnd->getName() == "GLFWWindow") {
-			HWND hwnd = glfwGetWin32Window(((GLFWWindow*)wnd)->getNativeWindow());
-		}
 		HRESULT hr = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED |
 			COINIT_DISABLE_OLE1DDE);
 
@@ -98,11 +88,6 @@ namespace VOEngine {
 	}
 	std::wstring PlatformUtils::OpenFolderDialog(const char* title) {
 		std::wstring outFolderPath;
-		Window* wnd = ResourceManager::getWindow();
-		HWND hwnd = nullptr;
-		if (wnd->getName() == "GLFWWindow") {
-			HWND hwnd = glfwGetWin32Window(((GLFWWindow*)wnd)->getNativeWindow());
-		}
 		HRESULT hr = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED |
 			COINIT_DISABLE_OLE1DDE);
 

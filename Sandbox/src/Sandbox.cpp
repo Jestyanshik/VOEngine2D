@@ -18,6 +18,7 @@ public:
 
 
 	void OnStartup() override {
+		m_Scene->AddUnit(UnitTypes::Square);
 	}
 
 };

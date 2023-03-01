@@ -7,7 +7,6 @@ public:
 	OpenGLShader(const std::filesystem::path& vertexShaderPath,
 		const std::filesystem::path& fragmentShaderPath);
 	~OpenGLShader();
-	void use();
 private:
 	std::string m_VertexShaderString;
 	std::string m_FragmentShaderString;

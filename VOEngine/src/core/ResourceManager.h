@@ -4,18 +4,28 @@
 #include "Renderer/Scene.h"
 
 namespace VOEngine {
-	
+	//Singleton
 	class ResourceManager {
 	public:
-		static void Init();
-		static void Cleanup();
-		static Window*   getWindow()   { return s_Window; };
-		static SettingsManager* getSettings() { return s_Settings; };
+		static ResourceManager& getInstance() {
+			static ResourceManager instance{};
+			return instance;
+		}
+		ResourceManager(const ResourceManager&) = delete;
+		ResourceManager(ResourceManager&&) = delete;
+		ResourceManager& operator=(const ResourceManager&) = delete;
+		ResourceManager& operator=(ResourceManager&&) = delete;
+		std::shared_ptr<Window> getWindow() { return m_Window; };
+		std::shared_ptr<SettingsManager> getSettings() { return m_Settings; };
+		std::shared_ptr<Scene> getScene() { return m_Scene; };
+		void Init();
 	private:
-		static Window* s_Window;
-		static SettingsManager* s_Settings;
-		static Scene* s_Scene;
-		static void collectData();
+		ResourceManager() {};
+		~ResourceManager();
+		std::shared_ptr<Window> m_Window;
+		std::shared_ptr<SettingsManager> m_Settings;
+		std::shared_ptr<Scene> m_Scene;
+		void collectData();
 	};
 }
 

@@ -18,25 +18,15 @@ namespace VOEngine {
 			m_Viewport = viewport;
 			m_Renderer->setViewport(m_Viewport);
 		}
-		void AddSquare(const glm::vec2& position = glm::vec2(0,0),
-			const glm::uvec2& size = glm::uvec2(0,0),
-			const glm::vec4& color = glm::vec4(0,0,0,0),
-			Sound* sound = nullptr, 
-			Texture* texture = nullptr) {
-			std::shared_ptr<Unit> square = std::make_shared<Unit>(position, size, color);
-			square->Texture = texture;
-			square->Sound = sound;
-			m_RenderUnitList.push_back(square);
-		}
+		void AddUnit(UnitTypes unitType);
 		void render() {
-			for (const std::shared_ptr<Unit>& unit : m_RenderUnitList) {
-				if (unit->shapeType == ShapeTypes::Square)
-					m_Renderer->renderSquare(unit->Position);
+			for (const auto& unit : m_RenderUnitList) {
+				m_Renderer->submitDrawCalls(unit.second->VAO.get());
 			}
 		}
 		Renderer* getRenderer() { return m_Renderer; };
 	private:
-		std::vector<std::shared_ptr<Unit>> m_RenderUnitList;
+		std::unordered_map<UUID, std::shared_ptr<Unit>> m_RenderUnitList;
 		Renderer* m_Renderer;
 		SoundEngine* m_SoundEngine;
 		//TODO: Add camera

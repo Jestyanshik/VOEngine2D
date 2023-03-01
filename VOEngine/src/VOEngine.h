@@ -14,9 +14,10 @@ namespace VOEngine {
 	class Application {
 	public:
 		Application(){
-			ResourceManager::Init();
-			m_Window = ResourceManager::getWindow();
-			m_Settings = ResourceManager::getSettings();
+			ResourceManager::getInstance().Init();
+			m_Window = ResourceManager::getInstance().getWindow();
+			m_Settings = ResourceManager::getInstance().getSettings();
+			m_Scene = ResourceManager::getInstance().getScene();
 		}
 		virtual void OnImGuiRender() = 0;
 		virtual void OnRender() = 0;
@@ -27,13 +28,13 @@ namespace VOEngine {
 			OnCleanup();
 		}
 	protected:
-		Window* m_Window;
-		SettingsManager* m_Settings;
+		std::shared_ptr<Window> m_Window;
+		std::shared_ptr<SettingsManager> m_Settings;
+		std::shared_ptr<Scene> m_Scene;
 	private:
 		void OnCleanup() {
 			m_Window = nullptr;
 			m_Settings = nullptr;
-			ResourceManager::Cleanup();
 		};
 		void Render() {
 			while (!m_Window->shouldClose()) {
@@ -83,7 +84,7 @@ namespace VOEngine {
 				if (m_Window->isKeyPressed(Key::Escape)) {
 					m_Window->setShouldClose(true);
 				}
-				//m_Renderer->render();
+				m_Scene->render();
 				//temp
 				ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
