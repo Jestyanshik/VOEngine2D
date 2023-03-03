@@ -9,10 +9,12 @@ namespace VOEngine {
 		void Bind() override;
 		void Unbind() override;
 	protected:
-		uint32_t AttachVertexBuffer(void* data, size_t size) override;
-		uint32_t AttachIndexBuffer(void* data, size_t size) override;
-		uint32_t GenerateVertexArray() override;
+		void CreateVertexBuffer() override;
+		void CreateIndexBuffer() override;
+		uint32_t CreateVertexArray() override;
 		void SubmitAttach() override;
+		void VertexBufferSubData(const void* data, size_t size, size_t offset) override;
+		void IndexBufferSubData(const void* data, size_t size, size_t offset) override;
 	private:
 
 	};

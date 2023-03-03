@@ -18,28 +18,29 @@ VOEngine::OpenGLRenderer::OpenGLRenderer() {
 	}
 	VO_CORE_INFO("Current OpenGL version is {}", getVersion());
 	m_Shader = new OpenGLShader("../VOEngine/src/Core/Renderer/Shaders/vertexShader.glsl", "../VOEngine/src/Core/Renderer/Shaders/fragmentShader.glsl");
+
 }
 
 void VOEngine::OpenGLRenderer::setViewport(glm::uvec2 viewport) {
 	glViewport(0, 0, viewport.x, viewport.y);
 }
 
-void VOEngine::OpenGLRenderer::drawSquare(const Unit& unit) {
-
-}
-
-void VOEngine::OpenGLRenderer::submitDrawCalls(VertexArray* VAO) {
+void VOEngine::OpenGLRenderer::submitDrawCalls() {
 	glClearColor(0, 0, 0, 0);
 	glClear(GL_COLOR_BUFFER_BIT);
-	glUseProgram(m_Shader->getID());
-	VAO->Bind();
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-	VAO->Unbind();
+	for (uint32_t i = 0; i < m_DrawCount; i++) {
+		glUseProgram(m_Shader->getID());
+		std::shared_ptr<VertexArray> VAO = m_VAOToDraw[i];
+		VAO->Bind();
+		glDrawElements(GL_TRIANGLES, (uint32_t)VAO->GetIndexCount(), GL_UNSIGNED_INT, 0);
+		VAO->Unbind();
+	}
 }
 
-std::shared_ptr<VOEngine::VertexArray> VOEngine::OpenGLRenderer::GenerateVertexArray(const std::vector<float>& VBO, const std::vector<uint32_t>& IBO) {
+std::shared_ptr<VOEngine::VertexArray> VOEngine::OpenGLRenderer::GenerateVertexArray()
+{
 	std::shared_ptr<VertexArray> VAO = std::make_shared<VOEngine::OpenGLVertexArray>();
-	VAO->AttachBuffers(VBO, IBO);
+	VAO->Create();
 	return VAO;
 }
 

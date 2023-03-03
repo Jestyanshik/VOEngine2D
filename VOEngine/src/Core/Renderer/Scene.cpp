@@ -31,22 +31,29 @@ VOEngine::Scene::Scene(glm::uvec2 viewport) : m_Viewport(viewport) {
 //Centered in viewport
 //Sound And Texture are not specified
 void VOEngine::Scene::AddUnit(UnitTypes unitType) {
-	if (unitType == UnitTypes::Square) {
-		std::shared_ptr<Unit> square = std::make_shared<Unit>();
-		glm::vec2 size = {100.0f / m_Viewport.x, 100.0f / m_Viewport.y};
-		square->Verticies = {
-				 (size.x + 0.0f),  (size.y + 0.0f), 0.0f, //top right
-				 (size.x + 0.0f), -(size.y + 0.0f), 0.0f, //bottom right
-				-(size.x + 0.0f), -(size.y + 0.0f), 0.0f, //bottom left
-				-(size.x + 0.0f),  (size.y + 0.0f), 0.0f  //top left
-		};
-		square->Indicies = {
-			0, 1, 3,
-			1, 2, 3
-		};
-		square->VAO = m_Renderer->GenerateVertexArray(square->Verticies, square->Indicies);
-		m_RenderUnitList.emplace(square->uuid, square);
+	std::shared_ptr<Unit> unit = std::make_shared<Unit>();
+	unit->Name = "Square";
+	unit->Size = { 100.0f / m_Viewport.x, 100.0f / m_Viewport.y };
+	unit->Type = unitType;
+	bool isUnique = m_UnitTypes.find(unitType) == m_UnitTypes.end();
+	uint32_t offset = 0;
+	if (isUnique) {
+		m_UnitTypes.insert(unitType);
 	}
-		
-
+	else {
+		offset = (uint32_t)m_RenderUnitList.size() * 4;
+		for (const auto& _unit : m_RenderUnitList) {
+			if (_unit.second->Type == unit->Type) {
+				unit->VAO = _unit.second->VAO;
+				break;
+			}
+		}
+	}
+	unit->UpdateVertices();
+	unit->UpdateIndices(offset);
+	unit->VAO = unit->VAO == nullptr ? m_Renderer->GenerateVertexArray() : unit->VAO;
+	unit->VAO->AttachBuffers(unit->Vertices, unit->Indices,
+		(offset / 4) * unit->Vertices.size(), (offset / 4) * unit->Indices.size());
+	m_Renderer->drawSquare(unit, !isUnique);
+	m_RenderUnitList.emplace(unit->uuid, unit);
 }

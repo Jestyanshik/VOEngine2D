@@ -1,17 +1,16 @@
 #pragma once
 #include "Core/Common/KeyCodes.h"
 
+struct Monitor {
+	std::string name;
+	glm::ivec2 size;
+	glm::vec2 contectScale;
+};
 
 struct WindowModes {
 	const static int Fullscreen = 0;
 	const static int Borderless = 1;
 	const static int Windowed = 2;
-};
-
-struct Monitor {
-	std::string name;
-	glm::ivec2 size;
-	glm::vec2 contectScale;
 };
 
 class Window

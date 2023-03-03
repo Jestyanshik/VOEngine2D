@@ -38,7 +38,7 @@ namespace VOEngine {
 			m_Window = glfwCreateWindow(m_Size.x, m_Size.y, m_Title.c_str(), NULL, NULL);
 			glfwSetWindowIcon(m_Window, 0, NULL);
 			glfwMakeContextCurrent(m_Window);
-			glfwSwapInterval(1);
+			glfwSwapInterval(0);
 			updatePos();
 			updateSize();
 		}
