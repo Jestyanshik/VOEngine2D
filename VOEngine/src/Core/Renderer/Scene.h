@@ -23,9 +23,14 @@ namespace VOEngine {
 		void render() {
 			m_Renderer->submitDrawCalls();
 		}
+		void update() {
+			for (const auto& unit : m_RenderUnitList) {
+				unit.second->UpdateVertices();
+			}
+		}
+		const glm::uvec2& getViewport() { return m_Viewport; };
 		Renderer* getRenderer() const { return m_Renderer; };
 	private:
-		std::shared_ptr<Unit> createUnit(UnitTypes unitType);
 		std::unordered_set<UnitTypes> m_UnitTypes{};
 		std::unordered_map<UUID, std::shared_ptr<Unit>> m_RenderUnitList;
 		Renderer* m_Renderer;

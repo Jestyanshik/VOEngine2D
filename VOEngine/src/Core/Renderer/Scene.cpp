@@ -33,7 +33,7 @@ VOEngine::Scene::Scene(glm::uvec2 viewport) : m_Viewport(viewport) {
 void VOEngine::Scene::AddUnit(UnitTypes unitType) {
 	std::shared_ptr<Unit> unit = std::make_shared<Unit>();
 	unit->Name = "Square";
-	unit->Size = { 100.0f / m_Viewport.x, 100.0f / m_Viewport.y };
+	unit->Size = { 100.0f, 100.0f };
 	unit->Type = unitType;
 	bool isUnique = m_UnitTypes.find(unitType) == m_UnitTypes.end();
 	uint32_t offset = 0;
@@ -49,11 +49,10 @@ void VOEngine::Scene::AddUnit(UnitTypes unitType) {
 			}
 		}
 	}
+	unit->Offset = offset / 4;
+	unit->VAO = unit->VAO == nullptr ? m_Renderer->GenerateVertexArray() : unit->VAO;
 	unit->UpdateVertices();
 	unit->UpdateIndices(offset);
-	unit->VAO = unit->VAO == nullptr ? m_Renderer->GenerateVertexArray() : unit->VAO;
-	unit->VAO->AttachBuffers(unit->Vertices, unit->Indices,
-		(offset / 4) * unit->Vertices.size(), (offset / 4) * unit->Indices.size());
 	m_Renderer->drawSquare(unit, !isUnique);
 	m_RenderUnitList.emplace(unit->uuid, unit);
 }

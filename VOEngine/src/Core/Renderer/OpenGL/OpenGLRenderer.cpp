@@ -32,13 +32,12 @@ void VOEngine::OpenGLRenderer::submitDrawCalls() {
 		glUseProgram(m_Shader->getID());
 		std::shared_ptr<VertexArray> VAO = m_VAOToDraw[i];
 		VAO->Bind();
-		glDrawElements(GL_TRIANGLES, (uint32_t)VAO->GetIndexCount(), GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, (uint32_t)VAO->IndexCount, GL_UNSIGNED_INT, 0);
 		VAO->Unbind();
 	}
 }
 
-std::shared_ptr<VOEngine::VertexArray> VOEngine::OpenGLRenderer::GenerateVertexArray()
-{
+std::shared_ptr<VOEngine::VertexArray> VOEngine::OpenGLRenderer::GenerateVertexArray() {
 	std::shared_ptr<VertexArray> VAO = std::make_shared<VOEngine::OpenGLVertexArray>();
 	VAO->Create();
 	return VAO;

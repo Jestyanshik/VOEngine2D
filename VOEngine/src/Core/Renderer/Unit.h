@@ -7,18 +7,22 @@
 
 namespace VOEngine {
 	struct Unit {
-		Texture* Texture = nullptr;
-		Sound* Sound = nullptr;
-		glm::vec2 Position = { 0,0 };
+		std::shared_ptr<Texture> Texture = nullptr;
+		std::shared_ptr<Sound> Sound = nullptr;
+		glm::vec3 Position = { 0,0,0 };
 		glm::vec2 Size = { 0,0 };
-		glm::vec4 Color = { 0, 0, 0, 0 };
+		glm::vec4 Color = { 1, 1, 1, 0 };
 		std::vector<float> Vertices{};
 		std::vector<uint32_t> Indices{};
 		std::shared_ptr<VertexArray> VAO = nullptr;
 		std::string Name;
+		uint32_t Offset;
 		UnitTypes Type;
 		UUID uuid;
 		void UpdateVertices();
 		void UpdateIndices(uint32_t offset);
+	private:
+		glm::vec3 m_NormalizedPosition;
+		glm::vec2 m_NormalizedSize;
 	};
 }

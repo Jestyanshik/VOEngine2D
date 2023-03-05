@@ -35,6 +35,7 @@ namespace VOEngine {
 		void OnCleanup() {
 			m_Window = nullptr;
 			m_Settings = nullptr;
+			m_Scene = nullptr;
 		};
 		void Render() {
 			while (!m_Window->shouldClose()) {
@@ -51,6 +52,7 @@ namespace VOEngine {
 				ImGui::NewFrame();
 				ImGui::DockSpaceOverViewport(NULL, ImGuiDockNodeFlags_None | ImGuiDockNodeFlags_PassthruCentralNode);
 				OnImGuiRender();
+				m_Scene->update();
 				static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_PassthruCentralNode;
 				ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
 
