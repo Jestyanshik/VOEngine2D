@@ -42,17 +42,22 @@ namespace VOEngine {
 				m_Window->pollEvents();
 
 				//temp
-				if (m_Settings->GetValue("Renderer") == "OpenGL") {
+				//if (m_Settings->GetValue("Renderer") == "OpenGL") {
 					ImGui_ImplOpenGL3_NewFrame();
-				}
-				if (m_Settings->GetValue("WindowLibrary") == "GLFW") {
+				//}
+				//if (m_Settings->GetValue("WindowLibrary") == "GLFW") {
 					ImGui_ImplGlfw_NewFrame();
-				}
+				//}
 
 				ImGui::NewFrame();
 				ImGui::DockSpaceOverViewport(NULL, ImGuiDockNodeFlags_None | ImGuiDockNodeFlags_PassthruCentralNode);
 				OnImGuiRender();
 				m_Scene->update();
+				m_Scene->render();
+				ImGui::Begin("Scene");
+				ImGui::Image(ImTextureID((void*)m_Scene->getFrameBuffer()), ImVec2(800, 600));
+				ImGui::End();
+				
 				static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_PassthruCentralNode;
 				ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
 
@@ -86,7 +91,7 @@ namespace VOEngine {
 				if (m_Window->isKeyPressed(Key::Escape)) {
 					m_Window->setShouldClose(true);
 				}
-				m_Scene->render();
+				
 				//temp
 				ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 

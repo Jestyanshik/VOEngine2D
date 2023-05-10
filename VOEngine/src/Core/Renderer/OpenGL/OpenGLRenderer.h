@@ -9,8 +9,12 @@ namespace VOEngine {
 	public:
 		std::string getVersion() override;
 		OpenGLRenderer();
+		~OpenGLRenderer();
 		void setViewport(glm::uvec2 viewport) override;
 		void submitDrawCalls() override;
 		std::shared_ptr<VertexArray> GenerateVertexArray() override;
+	private:
+		void createFrameBuffer();
+		GLuint m_FrameBuffer = 0;
 	};
 }

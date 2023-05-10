@@ -20,6 +20,7 @@ namespace VOEngine {
 		}
 		const std::unordered_map<UUID, std::shared_ptr<Unit>> getRenderUnits() { return m_RenderUnitList; };
 		void AddUnit(UnitTypes unitType);
+		const uint32_t getFrameBuffer() { return m_Renderer->getFrameBufferID(); };
 		void render() {
 			m_Renderer->submitDrawCalls();
 		}
