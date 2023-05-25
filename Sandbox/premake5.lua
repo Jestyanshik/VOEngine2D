@@ -38,5 +38,7 @@ project "Sandbox"
 			'copy "%{wks.location}\\%{prj.name}\\settings.yaml" "%{wks.location}\\bin\\' .. outputDir .. '\\%{prj.name}\\settings.yaml"',
 			'mkdir "%{wks.location}\\bin\\' .. outputDir .. '\\%{prj.name}\\res"',
 			'mkdir "%{wks.location}\\bin\\' .. outputDir .. '\\%{prj.name}\\res\\sounds"',
-			'copy "%{wks.location}\\%{prj.name}\\res\\sounds\\**.**" "%{wks.location}\\bin\\' .. outputDir .. '\\%{prj.name}\\res\\sounds\\**.**"'
+			'mkdir "%{wks.location}\\bin\\' .. outputDir .. '\\%{prj.name}\\res\\shaders"',
+			'copy "%{wks.location}\\%{prj.name}\\res\\sounds\\**.**" "%{wks.location}\\bin\\' .. outputDir .. '\\%{prj.name}\\res\\sounds\\**.**"',
+			'copy "%{wks.location}\\%{prj.name}\\res\\Shaders\\**.**" "%{wks.location}\\bin\\' .. outputDir .. '\\%{prj.name}\\res\\shaders\\**.**"'
 		}

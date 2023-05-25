@@ -33,7 +33,12 @@ namespace VOEngine {
 		else pos = { 100, 100 };
 		m_Window->setPosition(pos);
 
-		m_Scene = std::make_shared<Scene>(m_Window->getSize());
+		{
+			if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+				VO_CORE_ERROR("OpenGL couldn't initialize");
+			else
+				VO_CORE_INFO("OpenGL succesfully initialized");
+		}
 
 		//Temp
 		if (m_Settings->GetValue("WindowLibrary") == "GLFW")

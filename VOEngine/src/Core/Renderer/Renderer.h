@@ -5,12 +5,12 @@
 namespace VOEngine {
 	class Renderer {
 	public:
-		Renderer() {};
-		virtual std::string getVersion() = 0;
+		Renderer();
+		std::string getVersion();
 
-		virtual std::shared_ptr<VertexArray> GenerateVertexArray() = 0;
-		virtual void setViewport(glm::uvec2 viewport) = 0;
-		//isCopy just tells if unit got assigned new VAO{false} or the reference to the existing one{true} 
+		std::shared_ptr<VertexArray> GenerateVertexArray();
+		void setViewport(glm::uvec2 viewport);
+
 		void drawSquare(std::shared_ptr<Unit> unit, bool isCopy) {
 			if (!isCopy) {
 				m_DrawCount++;
@@ -18,13 +18,16 @@ namespace VOEngine {
 			}
 		};
 		const uint32_t getFrameBufferID() { return m_FrameBufferID; };
-		virtual void submitDrawCalls() = 0;
+		void submitDrawCalls();
+		void clear(glm::vec4 color);
 	protected:
 		Shader* m_Shader = nullptr;
 		uint32_t m_DrawCount = 0;
 		uint32_t m_FrameBufferID = 0;
 		std::vector<std::shared_ptr<VertexArray>> m_VAOToDraw{};
 	};
+
+
 }
 
 

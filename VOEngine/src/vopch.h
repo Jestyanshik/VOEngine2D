@@ -5,7 +5,6 @@
 #include <utility>
 #include <algorithm>
 #include <functional>
-
 #include <io.h>
 #include <cstdlib>
 #include <string>
@@ -43,6 +42,7 @@
 typedef glm::vec4 color;
 
 #include "Core/Common/Consts.h"
+#include "Core/Common/UUID.h"
 #include "Core/Common/Log.h"
 
 

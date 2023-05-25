@@ -17,7 +17,6 @@ namespace VOEngine {
 		ResourceManager& operator=(ResourceManager&&) = delete;
 		std::shared_ptr<Window> getWindow() { return m_Window; };
 		std::shared_ptr<SettingsManager> getSettings() { return m_Settings; };
-		std::shared_ptr<Scene> getScene() { return m_Scene; };
 		void Init();
 	private:
 		ResourceManager() {};

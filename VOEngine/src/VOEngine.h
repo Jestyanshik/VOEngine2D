@@ -17,47 +17,64 @@ namespace VOEngine {
 			ResourceManager::getInstance().Init();
 			m_Window = ResourceManager::getInstance().getWindow();
 			m_Settings = ResourceManager::getInstance().getSettings();
-			m_Scene = ResourceManager::getInstance().getScene();
 		}
 		virtual void OnImGuiRender() = 0;
 		virtual void OnRender() = 0;
 		virtual void OnStartup() = 0;
+		virtual void OnClose() = 0;
 		void run() {
 			OnStartup();
 			Render();
 			OnCleanup();
+			OnClose();
 		}
 	protected:
 		std::shared_ptr<Window> m_Window;
 		std::shared_ptr<SettingsManager> m_Settings;
-		std::shared_ptr<Scene> m_Scene;
+		std::unordered_map<UUID, std::shared_ptr<Scene>> m_Scenes;
+		std::shared_ptr<Scene> m_Scene = nullptr;
+
+		//Creates a scene and sets it as the current one
+		UUID createScene(const std::string& name) {
+			UUID sceneUUID;
+			glm::uvec2 size = m_Window->getSize();
+			m_Scene = std::make_shared<Scene>(size, name);
+			m_Scenes.emplace(sceneUUID, m_Scene);
+			return sceneUUID;
+		};
+		UUID createScene(std::unique_ptr<Framebuffer> framebuffer, const std::string& name) {
+			UUID sceneUUID;
+			m_Scene = std::make_shared<Scene>(std::move(framebuffer), name);
+			m_Scenes.emplace(sceneUUID, m_Scene);
+			return sceneUUID;
+		};
+		UUID loadSceneFromString(std::unique_ptr<Framebuffer> framebuffer, const std::string& sceneString) {
+			UUID sceneUUID;
+			m_Scene = std::shared_ptr<Scene>(Scene::loadFromString(std::move(framebuffer), sceneString));
+			m_Scenes.emplace(sceneUUID, m_Scene);
+			return sceneUUID;
+		}
 	private:
 		void OnCleanup() {
 			m_Window = nullptr;
 			m_Settings = nullptr;
-			m_Scene = nullptr;
 		};
 		void Render() {
 			while (!m_Window->shouldClose()) {
 				m_Window->pollEvents();
 
-				//temp
-				//if (m_Settings->GetValue("Renderer") == "OpenGL") {
-					ImGui_ImplOpenGL3_NewFrame();
-				//}
-				//if (m_Settings->GetValue("WindowLibrary") == "GLFW") {
-					ImGui_ImplGlfw_NewFrame();
-				//}
+				ImGui_ImplOpenGL3_NewFrame();
+
+				ImGui_ImplGlfw_NewFrame();
 
 				ImGui::NewFrame();
 				ImGui::DockSpaceOverViewport(NULL, ImGuiDockNodeFlags_None | ImGuiDockNodeFlags_PassthruCentralNode);
 				OnImGuiRender();
-				m_Scene->update();
-				m_Scene->render();
-				ImGui::Begin("Scene");
-				ImGui::Image(ImTextureID((void*)m_Scene->getFrameBuffer()), ImVec2(800, 600));
-				ImGui::End();
-				
+				if (m_Scene != nullptr) {
+					m_Scene->update();
+					m_Scene->render();
+				} 	
+
 				static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_PassthruCentralNode;
 				ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
 
@@ -91,7 +108,7 @@ namespace VOEngine {
 				if (m_Window->isKeyPressed(Key::Escape)) {
 					m_Window->setShouldClose(true);
 				}
-				
+
 				//temp
 				ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
@@ -106,6 +123,6 @@ namespace VOEngine {
 				//temp
 				m_Window->swapBuffers();
 			}
-		}
+		};
 	};
 }

@@ -4,6 +4,7 @@ namespace VOEngine {
 	class VertexArray {
 	public:
 		VertexArray() {};
+		~VertexArray();
 		void AttachVertexBuffer(const std::vector<float>& VBO, size_t offset) {
 			VertexBufferSubData(VBO.data(), VBO.size() * sizeof(float), offset * sizeof(float));
 		}
@@ -18,15 +19,15 @@ namespace VOEngine {
 			SubmitAttach();
 		}
 		size_t IndexCount = 0;
-		virtual void Bind() = 0;
-		virtual void Unbind() = 0;
-		virtual void SubmitAttach() = 0;
+		void Bind();
+		void Unbind();
+		void SubmitAttach();
 	protected:
-		virtual uint32_t CreateVertexArray() = 0;
-		virtual void CreateVertexBuffer() = 0;
-		virtual void CreateIndexBuffer() = 0;
-		virtual void VertexBufferSubData(const void* data, size_t size, size_t offset) = 0;
-		virtual void IndexBufferSubData(const void* data, size_t size, size_t offset) = 0;
+		uint32_t CreateVertexArray();
+		void CreateVertexBuffer();
+		void CreateIndexBuffer();
+		void VertexBufferSubData(const void* data, size_t size, size_t offset);
+		void IndexBufferSubData(const void* data, size_t size, size_t offset);
 		uint32_t m_ID = 0;
 		uint32_t m_VertexBufferID = 0, m_IndexBufferID = 0;
 	};

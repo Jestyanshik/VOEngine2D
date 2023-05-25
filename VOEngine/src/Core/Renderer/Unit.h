@@ -21,6 +21,9 @@ namespace VOEngine {
 		UUID uuid;
 		void UpdateVertices();
 		void UpdateIndices(uint32_t offset);
+		static Unit* fromString(const std::string& unitStr);
+		std::string toString();
+		YAML::Node toNode();
 	private:
 		glm::vec3 m_NormalizedPosition;
 		glm::vec2 m_NormalizedSize;
