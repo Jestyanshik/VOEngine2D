@@ -49,12 +49,12 @@ namespace VOEngine {
 	}
 
 	ResourceManager::~ResourceManager() {
-		PlatformUtils::s_StopExecution = true;
+		/*PlatformUtils::s_StopExecution = true;
 		try {
 			PlatformUtils::m_LoopThread.join();
-		}
-		catch (const std::exception&) {}
-		collectData();
+		}*/
+		//catch (const std::exception&) {}
+		CollectData();
 		VO_CORE_INFO("ImGui destructed");
 		if (m_Settings->GetValue("Renderer") == "OpenGL")
 			ImGui_ImplOpenGL3_Shutdown();
@@ -64,7 +64,7 @@ namespace VOEngine {
 		//Temp
 	}
 
-	void ResourceManager::collectData() {
+	void ResourceManager::CollectData() {
 		std::vector<uint32_t> windowSize = { m_Window->getSize().x, m_Window->getSize().y };
 		std::vector<int> windowPos = { m_Window->getPos().x, m_Window->getPos().y };
 

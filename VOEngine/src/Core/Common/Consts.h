@@ -142,4 +142,13 @@ namespace VOEngine {
 			Menu = 348
 		};
 	}
+
+	enum EventType {
+		SceneChange
+	};
+
+	struct Event {
+		UUID UUID;
+		EventType Type;
+	};
 }

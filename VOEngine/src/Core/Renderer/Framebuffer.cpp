@@ -31,15 +31,15 @@ VOEngine::Framebuffer::~Framebuffer() {
 	glDeleteFramebuffers(1, &m_FramebufferID);
 }
 
-void VOEngine::Framebuffer::beginFrame() {
+void VOEngine::Framebuffer::BeginFrame() {
 	glBindFramebuffer(GL_FRAMEBUFFER, m_FramebufferID);
 }
 
-void VOEngine::Framebuffer::endFrame() {
+void VOEngine::Framebuffer::EndFrame() {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-void VOEngine::Framebuffer::resize(glm::uvec2 size) {
+void VOEngine::Framebuffer::Resize(glm::uvec2 size) {
 	const uint32_t textures[]{ m_DepthBufferID, m_TextureID };
 	glDeleteTextures(2, textures);
 	glDeleteFramebuffers(1, &m_FramebufferID);

@@ -8,6 +8,19 @@ VOEngine::VertexArray::~VertexArray() {
 	glDeleteBuffers(1, &m_IndexBufferID);
 }
 
+void VOEngine::VertexArray::ClearVertexBuffer() {
+	glNamedBufferSubData(m_VertexBufferID, 0, m_VertexBufferSize, nullptr);
+}
+
+void VOEngine::VertexArray::ClearIndexBuffer() {
+	glNamedBufferSubData(m_IndexBufferID, 0, m_IndexBufferSize, nullptr);
+}
+
+void VOEngine::VertexArray::Clear() {
+	ClearVertexBuffer();
+	ClearIndexBuffer();
+}
+
 void VOEngine::VertexArray::Bind() {
 	glBindVertexArray(m_ID);
 }
@@ -40,20 +53,29 @@ uint32_t VOEngine::VertexArray::CreateVertexArray() {
 
 void VOEngine::VertexArray::CreateVertexBuffer() {
 	glCreateBuffers(1, &m_VertexBufferID);
-	glNamedBufferData(m_VertexBufferID, sizeof(float) * 9 * 4096, nullptr, GL_DYNAMIC_DRAW);
+	glNamedBufferData(m_VertexBufferID, m_VertexBufferSize, nullptr, GL_DYNAMIC_DRAW);
 }
 
 void VOEngine::VertexArray::CreateIndexBuffer() {
 	glCreateBuffers(1, &m_IndexBufferID);
-	glNamedBufferData(m_IndexBufferID, sizeof(float) * 4096, nullptr, GL_DYNAMIC_DRAW);
+	glNamedBufferData(m_IndexBufferID, m_IndexBufferSize, nullptr, GL_DYNAMIC_DRAW);
 }
 
 void VOEngine::VertexArray::VertexBufferSubData(const void* data, size_t size, size_t offset) {
 	glNamedBufferSubData(m_VertexBufferID, offset, size, data);
-
 }
 
 void VOEngine::VertexArray::IndexBufferSubData(const void* data, size_t size, size_t offset) {
 	glNamedBufferSubData(m_IndexBufferID, offset, size, data);
+}
 
+std::shared_ptr<VOEngine::VertexArray> VOEngine::VertexArrayBuilder::Create(UnitTypes type) {
+	std::shared_ptr<VertexArray> vao;
+	if (auto search = m_VertexArrays.find(type); search != m_VertexArrays.end())
+		vao = (*search).second;
+	else {
+		vao = (*m_VertexArrays.emplace(type, new VertexArray).first).second;
+		vao->Create();
+	}
+	return vao;
 }

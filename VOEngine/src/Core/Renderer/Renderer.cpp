@@ -3,7 +3,7 @@
 #include "../ResourceManager.h"
 
 VOEngine::Renderer::Renderer() {
-	std::shared_ptr<Window> window = ResourceManager::getInstance().getWindow();
+	std::shared_ptr<Window> window = ResourceManager::GetInstance().getWindow();
 	if (window->getName() == "GLFW Window") {
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 			VO_CORE_ERROR("OpenGL couldn't initialize");
@@ -24,21 +24,29 @@ std::shared_ptr<VOEngine::VertexArray> VOEngine::Renderer::GenerateVertexArray()
 	return VAO;
 }
 
-void VOEngine::Renderer::setViewport(glm::uvec2 viewport) {
+void VOEngine::Renderer::SetViewport(glm::uvec2 viewport) {
 	glViewport(0, 0, viewport.x, viewport.y);
 }
 
-void VOEngine::Renderer::submitDrawCalls() {
+void VOEngine::Renderer::DrawElements(VertexArray* vao, uint32_t indices) {
+	glUseProgram(m_Shader->getID());
+	vao->Bind();
+	glDrawElements(GL_TRIANGLES, indices, GL_UNSIGNED_INT, 0);
+	vao->Unbind();
+	glUseProgram(0);
+}
+
+void VOEngine::Renderer::SubmitDrawCalls() {
 	for (uint32_t i = 0; i < m_DrawCount; i++) {
 		glUseProgram(m_Shader->getID());
 		std::shared_ptr<VertexArray> VAO = m_VAOToDraw[i];
 		VAO->Bind();
-		glDrawElements(GL_TRIANGLES, (uint32_t)VAO->IndexCount, GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, (uint32_t)VAO->IndexCount , GL_UNSIGNED_INT, 0);
 		VAO->Unbind();
 	}
 }
 
-void VOEngine::Renderer::clear(glm::vec4 color) {
+void VOEngine::Renderer::Clear(glm::vec4 color) {
 	glClearColor(0, 0, 0, 0);
 	glClear(GL_COLOR_BUFFER_BIT);
 }

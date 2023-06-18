@@ -30,24 +30,27 @@ void VOEngine::Unit::UpdateVertices() {
 	this->VAO->AttachVertexBuffer(Vertices, Offset * Vertices.size());
 }
 
-void VOEngine::Unit::UpdateIndices(uint32_t offset) {
+std::vector<uint32_t> VOEngine::Unit::UpdateIndices(uint32_t offset) {
+	std::vector<uint32_t> result;
 	switch (Type) {
-		case VOEngine::Quad:
-			this->Indices = {
-				offset + 0, offset + 1, offset + 3,
-				offset + 1, offset + 2, offset + 3
-			};
-			break;
-		case VOEngine::Triangle:
-			break;
-		case VOEngine::Circle:
-			break;
-		case VOEngine::Polygon:
-			break;
-		default:
-			break;
+	case VOEngine::Quad:
+		offset *= 4;
+		result = {
+			offset + 0, offset + 1, offset + 3,
+			offset + 1, offset + 2, offset + 3
+		};
+		IndicesCount = 6;
+		break;
+	case VOEngine::Triangle:
+		break;
+	case VOEngine::Circle:
+		break;
+	case VOEngine::Polygon:
+		break;
+	default:
+		break;
 	}
-	this->VAO->AttachIndexBuffer(Indices, Offset * Indices.size());
+	return result;
 }
 
 VOEngine::Unit* VOEngine::Unit::fromString(const std::string& unitStr) {

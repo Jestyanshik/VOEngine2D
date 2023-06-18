@@ -12,12 +12,28 @@
 #include <GLFW/glfw3native.h>
 
 namespace VOEngine {
-	std::thread PlatformUtils::m_CommandThread, PlatformUtils::m_LoopThread;
-	bool PlatformUtils::s_StopExecution;
+	COMDLG_FILTERSPEC* CreateFilter(const std::wstring& filter, const std::vector<std::wstring>& extensions) {
+		COMDLG_FILTERSPEC* fSpec = nullptr;
+		if (extensions.size() % 2 != 0) {
+			VO_CORE_WARN("OpenFileDialog Filter was not applied due to uneven amount of extesions and typenames");
+		}
+		else {
+			fSpec = new COMDLG_FILTERSPEC[extensions.size() / 2];
+			for (uint32_t i = 0; i < extensions.size(); i += 2) {
+				COMDLG_FILTERSPEC filterSpec;
+				filterSpec.pszName = extensions[i].c_str();
+				filterSpec.pszSpec = extensions[i + 1].c_str();
+				fSpec[i / 2] = filterSpec;
+			}
+		}
+		return fSpec;
+	}
 
-	//TODO: Add support for filters
-	std::wstring PlatformUtils::OpenFileDialog(const char* filter) {
+	//filter consists of name|extensions e.g "Image((*.jpg;*.jpeg)|*.jpg;*.jpeg|Bitmap (*.bmp)|*.bmp" 
+	std::wstring PlatformUtils::OpenFileDialog(const std::wstring& filter) {
 		std::wstring outFolderPath;
+		auto extensions = Split(filter, L"|");
+		COMDLG_FILTERSPEC* fSpec = CreateFilter(filter, extensions);
 		HRESULT hr = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED |
 			COINIT_DISABLE_OLE1DDE);
 
@@ -26,6 +42,8 @@ namespace VOEngine {
 			DWORD dwOptions;
 			if (SUCCEEDED(pfd->GetOptions(&dwOptions))) {
 				pfd->SetOptions(dwOptions | FOS_NOCHANGEDIR);
+				if (fSpec != nullptr)
+					pfd->SetFileTypes(sizeof(*fSpec) / sizeof(COMDLG_FILTERSPEC), fSpec);
 			}
 			if (SUCCEEDED(pfd->Show(NULL))) {
 				IShellItem* pItem;
@@ -46,16 +64,22 @@ namespace VOEngine {
 		CoUninitialize();
 		return outFolderPath;
 	}
-	std::vector<std::wstring> PlatformUtils::OpenFilesDialog(const char* filter) {
+
+	//filter consists of name|extensions e.g "Image((*.jpg;*.jpeg)|*.jpg;*.jpeg|Bitmap (*.bmp)|*.bmp" 
+	std::vector<std::wstring> PlatformUtils::OpenFilesDialog(const std::wstring& filter) {
 		std::vector<std::wstring> outFilesPath;
 		HRESULT hr = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED |
 			COINIT_DISABLE_OLE1DDE);
+		auto extensions = Split(filter, L"|");
+		COMDLG_FILTERSPEC* fSpec = CreateFilter(filter, extensions);
 
 		IFileOpenDialog* pfd;
 		if (SUCCEEDED(CoCreateInstance(CLSID_FileOpenDialog, NULL, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&pfd)))) {
 			DWORD dwOptions;
 			if (SUCCEEDED(pfd->GetOptions(&dwOptions))) {
 				pfd->SetOptions(dwOptions | FOS_ALLOWMULTISELECT | FOS_NOCHANGEDIR);
+				if (fSpec != nullptr)
+					pfd->SetFileTypes(sizeof(*fSpec) / sizeof(COMDLG_FILTERSPEC), fSpec);
 			}
 			if (SUCCEEDED(pfd->Show(NULL))) {
 				IShellItemArray* pItems;
@@ -86,6 +110,7 @@ namespace VOEngine {
 		CoUninitialize();
 		return outFilesPath;
 	}
+
 	std::wstring PlatformUtils::OpenFolderDialog(const char* title) {
 		std::wstring outFolderPath;
 		HRESULT hr = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED |
@@ -115,34 +140,6 @@ namespace VOEngine {
 		}
 		CoUninitialize();
 		return outFolderPath;
-	}
-	void PlatformUtils::executeCommand(const std::string& file, const std::string& command) {
-		if (!m_CommandThread.joinable()) {
-			m_CommandThread = std::thread([file, command]() {
-				system(command.c_str());
-			});
-		}
-	}
-	void PlatformUtils::executeMultipleCommands(const std::string& file, const std::vector<std::string>& commands) {
-		if (s_StopExecution) {
-			try {
-				m_LoopThread.join();
-			}
-			catch (const std::exception&) {}
-			s_StopExecution = false;
-		}
-		m_LoopThread = std::thread([file, commands]() {
-			for (const std::string& command : commands) {
-				if (s_StopExecution) {
-					break;
-				}
-				VO_CORE_INFO(command);
-				m_CommandThread = std::thread([file, command]() {
-					system(command.c_str());
-				});
-				m_CommandThread.join();
-			}
-		});
 	}
 }
 #endif

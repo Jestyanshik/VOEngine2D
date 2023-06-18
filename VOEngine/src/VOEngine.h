@@ -9,14 +9,18 @@
 #include "Core/ImGuiBackend/imgui_impl_glfw.h"
 #include "Core/ResourceManager.h"
 #include "Core/Common/Settings.h"
+#include "Core/Renderer/SceneRenderer.h"
+#include "Core/Common/Threading.h"
 
 namespace VOEngine {
 	class Application {
 	public:
-		Application(){
-			ResourceManager::getInstance().Init();
-			m_Window = ResourceManager::getInstance().getWindow();
-			m_Settings = ResourceManager::getInstance().getSettings();
+		Application() {
+			ResourceManager::GetInstance().Init();
+			m_Window = ResourceManager::GetInstance().getWindow();
+			m_Settings = ResourceManager::GetInstance().getSettings();
+			m_Scheduler = ResourceManager::GetInstance().GetScheduler();
+			m_Renderer = std::make_unique<SceneRenderer>();
 		}
 		virtual void OnImGuiRender() = 0;
 		virtual void OnRender() = 0;
@@ -33,6 +37,7 @@ namespace VOEngine {
 		std::shared_ptr<SettingsManager> m_Settings;
 		std::unordered_map<UUID, std::shared_ptr<Scene>> m_Scenes;
 		std::shared_ptr<Scene> m_Scene = nullptr;
+		Scheduler m_Scheduler;
 
 		//Creates a scene and sets it as the current one
 		UUID createScene(const std::string& name) {
@@ -50,11 +55,18 @@ namespace VOEngine {
 		};
 		UUID loadSceneFromString(std::unique_ptr<Framebuffer> framebuffer, const std::string& sceneString) {
 			UUID sceneUUID;
-			m_Scene = std::shared_ptr<Scene>(Scene::loadFromString(std::move(framebuffer), sceneString));
+			Scene* sceneInstance = Scene::loadFromString(std::move(framebuffer), sceneString);
+			m_Scene = std::shared_ptr<Scene>(sceneInstance);
 			m_Scenes.emplace(sceneUUID, m_Scene);
 			return sceneUUID;
 		}
+
+		void RenderScene(std::shared_ptr<Scene> scene) {
+			m_Renderer->SetScene(scene);
+		}
 	private:
+		std::unique_ptr<SceneRenderer> m_Renderer;
+
 		void OnCleanup() {
 			m_Window = nullptr;
 			m_Settings = nullptr;
@@ -71,8 +83,7 @@ namespace VOEngine {
 				ImGui::DockSpaceOverViewport(NULL, ImGuiDockNodeFlags_None | ImGuiDockNodeFlags_PassthruCentralNode);
 				OnImGuiRender();
 				if (m_Scene != nullptr) {
-					m_Scene->update();
-					m_Scene->render();
+					m_Renderer->Render();
 				} 	
 
 				static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_PassthruCentralNode;
