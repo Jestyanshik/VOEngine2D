@@ -19,21 +19,18 @@ void VOEngine::SceneRenderer::SetScene(std::shared_ptr<Scene> scene) {
 void VOEngine::SceneRenderer::Render() {	
 	if (m_Scene == nullptr) 
 		return;
+
 	if (ResourceManager::GetInstance().GetEvents().size() != 0) {
 		UpdateBuffers();
 		ResourceManager::GetInstance().GetEvents().clear();
 	}
-	if (m_Framebuffer != nullptr) {
-		std::string imGuiWindowName = m_Framebuffer->GetImGuiWindowName();
-		ImGui::Begin(imGuiWindowName.c_str());
-		if (m_Framebuffer->OnImGuiWindow()) {
-			glm::uvec2 size = (glm::vec2)ImGui::GetContentRegionAvail();
-			if (size != m_Framebuffer->GetSize()) {
-				Resize(size);
-			}
-		}
-		m_Framebuffer->BeginFrame();
-	}
+
+	m_Framebuffer->BeginFrame();
+
+	glm::uvec2 size = (glm::vec2)ImGui::GetContentRegionAvail();
+	if (size != m_Framebuffer->GetSize()) 
+		m_Renderer->SetViewport(size);
+	
 	m_Renderer->Clear({ 0,0,0,1 });
 	
 	for (const auto& it : m_Scene->GetRenderUnits()) 
@@ -42,17 +39,11 @@ void VOEngine::SceneRenderer::Render() {
 	for (const auto& VAO : m_VertexArrays) 
 		m_Renderer->DrawElements(VAO.get(), m_IndicesCount);
 	
-
-	if (m_Framebuffer != nullptr) {
-		m_Framebuffer->EndFrame();
-		ImGui::Image((ImTextureID)m_Framebuffer->GetTextureID(), (glm::vec2)m_Framebuffer->GetSize());
-		ImGui::End();
-	}
+	m_Framebuffer->EndFrame();
 }
 
 void VOEngine::SceneRenderer::Resize(glm::uvec2 size) {
-	m_Framebuffer->Resize(size);
-	m_Renderer->SetViewport(size);
+	
 }
 
 void VOEngine::SceneRenderer::UpdateBuffers() {

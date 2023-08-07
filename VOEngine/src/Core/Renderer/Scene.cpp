@@ -47,33 +47,27 @@ void VOEngine::Scene::AddUnit(Unit* punit) {
 	ResourceManager::GetInstance().GetEvents().push_back(event);
 }
 
-VOEngine::Scene* VOEngine::Scene::loadFromString(std::unique_ptr<Framebuffer> framebuffer, const std::string& sceneString) {
-	YAML::Node node = YAML::Load(sceneString);
+void VOEngine::Scene::LoadFromFile(const std::filesystem::path& path) {
+	YAML::Node node = YAML::Load(path.string());
 	std::string sceneName = "Unknown scene";
 	for (YAML::const_iterator it = node.begin(); it != node.end(); ++it) {
 		sceneName = it->first.as<std::string>();
-		Scene* instance = new Scene(move(framebuffer), sceneName);
 		for (YAML::const_iterator iter = node[sceneName]["Units"].begin(); iter != node[sceneName]["Units"].end(); ++iter) {
 			std::stringstream ss;
 			ss << iter->second;
 
 			Unit* unit = Unit::fromString(ss.str());
-			instance->AddUnit(unit);
+			AddUnit(unit);
 		}
-		return instance;
 	}
-	return new Scene(move(framebuffer), sceneName);
 }
 
-
-std::string VOEngine::Scene::toString() {
+void VOEngine::Scene::SaveToFile(const std::filesystem::path& path) {
 	YAML::Node node;
 	for (const auto& pair : m_RenderUnitList) {
 		const std::shared_ptr<Unit> unit = pair.second;
 		node[m_Name]["Units"][(uint64_t)pair.first] = unit->toNode();
 	}
-	std::stringstream out;
+	std::fstream out(path);
 	out << node;
-
-	return out.str();
 }

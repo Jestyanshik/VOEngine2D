@@ -36,8 +36,8 @@
 #include "GLFW/glfw3.h"
 #include "glm.hpp"
 #include <imgui.h>
-#include "Core/ImGuiBackend/imgui_impl_opengl3.h"
-#include "Core/ImGuiBackend/imgui_impl_glfw.h"
+#include "Core/ImGui/ImGuiBackend/imgui_impl_opengl3.h"
+#include "Core/ImGui/ImGuiBackend/imgui_impl_glfw.h"
 
 typedef glm::vec4 color;
 

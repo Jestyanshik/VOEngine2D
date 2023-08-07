@@ -14,7 +14,7 @@ namespace VOEngine {
 		//Returns 0 if file doesn't exist otherwise returns uint32_t >= 1
 		virtual uint32_t loadSoundFromFile(const std::filesystem::path& filepath) {
 			std::string filePathString = m_SoundDir.string() + filepath.string();
-			if (not std::filesystem::exists(filePathString)) {
+			if (!std::filesystem::exists(filePathString)) {
 				VO_CORE_ERROR("[SoundEngine] File doesn't exist {}", filepath);
 				return 0;
 			}

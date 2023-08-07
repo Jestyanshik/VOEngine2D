@@ -33,10 +33,19 @@ VOEngine::Framebuffer::~Framebuffer() {
 
 void VOEngine::Framebuffer::BeginFrame() {
 	glBindFramebuffer(GL_FRAMEBUFFER, m_FramebufferID);
+	ImGui::Begin(m_ImGuiWindowName.c_str());
+	if (OnImGuiWindow()) {
+		glm::uvec2 size = (glm::vec2)ImGui::GetContentRegionAvail();
+		if (size != m_Size) {
+			Resize(size);
+		}
+	}
 }
 
 void VOEngine::Framebuffer::EndFrame() {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	ImGui::Image((ImTextureID)m_TextureID, (glm::vec2)m_Size);
+	ImGui::End();
 }
 
 void VOEngine::Framebuffer::Resize(glm::uvec2 size) {

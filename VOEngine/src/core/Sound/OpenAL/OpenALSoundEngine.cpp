@@ -41,7 +41,7 @@ std::string VOEngine::OpenALSoundEngine::getDefaultDevice() {
 
 uint32_t VOEngine::OpenALSoundEngine::loadSoundFromFile(const std::filesystem::path& filepath) {
 	std::string filePathString = m_SoundDir.string() + filepath.string();
-	if (not std::filesystem::exists(filePathString)) {
+	if (!std::filesystem::exists(filePathString)) {
 		VO_CORE_ERROR("[SoundEngine] File doesn't exist {}", filepath);
 		return 0;
 	}
