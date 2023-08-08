@@ -5,6 +5,9 @@
 VOEngine::SceneRenderer::SceneRenderer() {
 	m_Renderer = std::make_unique<Renderer>();
 	m_Framebuffer = std::make_shared<Framebuffer>(800,600, "Scene");
+	auto eventNotifier = ResourceManager::GetInstance().GetEventNotifier();
+	eventNotifier->Subscribe(EventType::Resize, EventCallback{[this](void* info) {OnResize(info);}, "SceneRenderer"});
+	eventNotifier->Subscribe(EventType::RenderUpdate, EventCallback{ [this](void*) {UpdateBuffers();}, "SceneRenderer" });
 }
 
 void VOEngine::SceneRenderer::SetScene(std::shared_ptr<Scene> scene) {
@@ -20,16 +23,7 @@ void VOEngine::SceneRenderer::Render() {
 	if (m_Scene == nullptr) 
 		return;
 
-	if (ResourceManager::GetInstance().GetEvents().size() != 0) {
-		UpdateBuffers();
-		ResourceManager::GetInstance().GetEvents().clear();
-	}
-
 	m_Framebuffer->BeginFrame();
-
-	glm::uvec2 size = (glm::vec2)ImGui::GetContentRegionAvail();
-	if (size != m_Framebuffer->GetSize()) 
-		m_Renderer->SetViewport(size);
 	
 	m_Renderer->Clear({ 0,0,0,1 });
 	
@@ -42,11 +36,16 @@ void VOEngine::SceneRenderer::Render() {
 	m_Framebuffer->EndFrame();
 }
 
-void VOEngine::SceneRenderer::Resize(glm::uvec2 size) {
-	
+void VOEngine::SceneRenderer::OnResize(void* eventInfo) {
+	auto info = *(ResizeEventInfo*)eventInfo;
+	m_Renderer->SetViewport(info.Size);
+	m_Framebuffer->Resize(info.Size);
 }
 
 void VOEngine::SceneRenderer::UpdateBuffers() {
+	if (m_Scene == nullptr) {
+		return;
+	}
 	if (m_IndicesCount != 0) {
 		for (const auto& it : m_Scene->GetRenderUnits()) {
 			if (it.second->VAO == nullptr) {

@@ -3,13 +3,6 @@
 #include "../ResourceManager.h"
 
 VOEngine::Renderer::Renderer() {
-	std::shared_ptr<Window> window = ResourceManager::GetInstance().getWindow();
-	if (window->getName() == "GLFW Window") {
-		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-			VO_CORE_ERROR("OpenGL couldn't initialize");
-		else
-			VO_CORE_INFO("OpenGL succesfully initialized");
-	}
 	VO_CORE_INFO("Current OpenGL version is {}", getVersion());
 	m_Shader = new Shader("res\\shaders\\vertexShader.glsl", "res\\shaders\\fragmentShader.glsl");
 }

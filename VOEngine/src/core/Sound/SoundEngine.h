@@ -39,5 +39,6 @@ namespace VOEngine {
 		std::vector<std::string> m_AvailableDevices = {};
 		uint32_t m_LastID = 1;
 	};
-	
+
+	std::unique_ptr<SoundEngine> BuildSoundEngine();
 }

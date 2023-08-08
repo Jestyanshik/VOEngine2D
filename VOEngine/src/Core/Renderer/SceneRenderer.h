@@ -10,7 +10,7 @@ namespace VOEngine {
 
 		void SetScene(std::shared_ptr<Scene> scene);
 		void Render();
-		void Resize(glm::uvec2 size);
+		void OnResize(void* eventInfo);
 		void UpdateBuffers();
 	private:
 		std::shared_ptr<VertexArray> CreateUnitVAO(std::shared_ptr<Unit> unit);

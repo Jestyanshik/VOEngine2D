@@ -17,9 +17,10 @@ namespace VOEngine {
 		Application() {
 			ResourceManager::GetInstance().Init();
 			m_Window = ResourceManager::GetInstance().getWindow();
-			m_Settings = ResourceManager::GetInstance().getSettings();
+			m_Settings = ResourceManager::GetInstance().GetSettings();
 			m_Scheduler = ResourceManager::GetInstance().GetScheduler();
 			m_Renderer = std::make_unique<SceneRenderer>();
+			m_SoundEngine = BuildSoundEngine();
 		}
 		virtual void OnImGuiRender() = 0;
 		virtual void OnRender() = 0;
@@ -35,6 +36,7 @@ namespace VOEngine {
 		std::shared_ptr<Window> m_Window;
 		std::shared_ptr<SettingsManager> m_Settings;
 		std::vector<std::shared_ptr<Scene>> m_Scenes;
+		std::unique_ptr<SoundEngine> m_SoundEngine;
 		std::shared_ptr<Scene> m_Scene = nullptr;
 		Scheduler m_Scheduler;
 

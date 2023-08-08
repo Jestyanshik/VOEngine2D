@@ -8,7 +8,6 @@ namespace VOEngine {
 		//Constructor that takes in imgui control
 		void BeginFrame();
 		void EndFrame();
-		bool OnImGuiWindow() { return m_ImGuiWindowName != ""; };
 		std::string GetImGuiWindowName() const { return m_ImGuiWindowName; };
 		void Resize(glm::uvec2 size);
 		glm::uvec2 GetSize() { return m_Size; };

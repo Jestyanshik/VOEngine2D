@@ -53,7 +53,7 @@ std::vector<uint32_t> VOEngine::Unit::UpdateIndices(uint32_t offset) {
 	return result;
 }
 
-VOEngine::Unit* VOEngine::Unit::fromString(const std::string& unitStr) {
+VOEngine::Unit* VOEngine::Unit::FromString(const std::string& unitStr) {
 	YAML::Node node = YAML::Load(unitStr);
 	Unit* instance = new Unit;
 

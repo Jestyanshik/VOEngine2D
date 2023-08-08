@@ -2,6 +2,7 @@
 #include "Window/Window.h"
 #include "Common/Settings.h"
 #include "Common/Threading.h"
+#include "Common/Events.h"
 #include "Renderer/Scene.h"
 
 namespace VOEngine {
@@ -16,17 +17,16 @@ namespace VOEngine {
 		ResourceManager& operator=(const ResourceManager&) = delete;
 		ResourceManager& operator=(ResourceManager&&) = delete;
 		std::shared_ptr<Window> getWindow() { return m_Window; };
-		std::shared_ptr<SettingsManager> getSettings() { return m_Settings; };
-		std::vector<Event>& GetEvents() { return m_Events; };
+		std::shared_ptr<SettingsManager> GetSettings() { return m_Settings; };
 		Scheduler& GetScheduler() { return m_Scheduler; };
+		std::shared_ptr<EventNotifier> GetEventNotifier() { return m_Notifier; };
 		void Init();
 	private:
 		ResourceManager() {};
 		~ResourceManager();
 		std::shared_ptr<Window> m_Window;
 		std::shared_ptr<SettingsManager> m_Settings;
-		std::vector<Event> m_Events{};
-		std::shared_ptr<Scene> m_Scene;
+		std::shared_ptr<EventNotifier> m_Notifier{};
 		Scheduler m_Scheduler{};
 		void CollectData();
 	};

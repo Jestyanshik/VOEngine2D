@@ -12,13 +12,13 @@ namespace VOEngine {
 		if (Log::Init())
 			VO_CORE_INFO("spdlog succesfuly initialized");
 		m_Settings = std::make_shared<SettingsManager>();
-		//Temporary code imGui should be replaced with something else
+		m_Notifier = std::make_shared<EventNotifier>();
+
 		ImGui::CreateContext();
 		ImGuiIO& io = ImGui::GetIO();
 		ImGui::StyleColorsDark();
 		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
-
 
 		std::vector<std::string> strSize = m_Settings->GetNodeSequence("Window", "Size");
 		glm::ivec2 size;
@@ -40,20 +40,13 @@ namespace VOEngine {
 				VO_CORE_INFO("OpenGL succesfully initialized");
 		}
 
-		//Temp
 		if (m_Settings->GetValue("WindowLibrary") == "GLFW")
 			ImGui_ImplGlfw_InitForOpenGL(((GLFWWindow*)m_Window.get())->getNativeWindow(), true);
 		if (m_Settings->GetValue("Renderer") == "OpenGL")
 			ImGui_ImplOpenGL3_Init("#version 460");
-		//Temp
 	}
 
 	ResourceManager::~ResourceManager() {
-		/*PlatformUtils::s_StopExecution = true;
-		try {
-			PlatformUtils::m_LoopThread.join();
-		}*/
-		//catch (const std::exception&) {}
 		CollectData();
 		VO_CORE_INFO("ImGui destructed");
 		if (m_Settings->GetValue("Renderer") == "OpenGL")
@@ -61,7 +54,6 @@ namespace VOEngine {
 		if (m_Settings->GetValue("WindowLibrary") == "GLFW")
 			ImGui_ImplGlfw_Shutdown();
 		ImGui::DestroyContext();
-		//Temp
 	}
 
 	void ResourceManager::CollectData() {

@@ -21,7 +21,7 @@ namespace VOEngine {
 		UUID uuid;
 		void UpdateVertices();
 		std::vector<uint32_t> UpdateIndices(uint32_t offset);
-		static Unit* fromString(const std::string& unitStr);
+		static Unit* FromString(const std::string& unitStr);
 		std::string toString();
 		YAML::Node toNode();
 	private:

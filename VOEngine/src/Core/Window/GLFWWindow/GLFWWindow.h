@@ -7,6 +7,7 @@ struct GLFWMonitor : Monitor {
 };
 
 namespace VOEngine {
+	void OnResize(GLFWwindow* window, int width, int height);
 	class GLFWWindow : public Window {
 	private:
 		GLFWwindow* m_Window = nullptr;
@@ -29,7 +30,6 @@ namespace VOEngine {
 			glfwSetErrorCallback([](int code, const char* description) {
 				VO_CORE_ERROR("Error code: {} \n Description:\n {}", code, description);
 			});
-			
 			glfwWindowHint(GLFW_RESIZABLE, true);
 			glfwWindowHint(GLFW_DECORATED, m_Decorated);
 			glfwWindowHint(GLFW_FOCUSED, m_Focused);
@@ -38,6 +38,7 @@ namespace VOEngine {
 			m_Window = glfwCreateWindow(m_Size.x, m_Size.y, m_Title.c_str(), NULL, NULL);
 			glfwSetWindowIcon(m_Window, 0, NULL);
 			glfwMakeContextCurrent(m_Window);
+			glfwSetFramebufferSizeCallback(m_Window, [](GLFWwindow* window, int width, int height) {OnResize(window, width, height);});
 			glfwSwapInterval(0);
 			updatePos();
 			updateSize();
@@ -45,7 +46,6 @@ namespace VOEngine {
 
 		bool isKeyPressed(VOEngine::KeyCode key) override;
 		bool shouldClose() override;
-
 		void setMonitor(Monitor* monitor)    override;
 		void setMaximized(bool value)        override;
 		void setDecorated(bool value)        override;
@@ -73,5 +73,4 @@ namespace VOEngine {
 		void detectMonitor();
 
 	};
-	
 }

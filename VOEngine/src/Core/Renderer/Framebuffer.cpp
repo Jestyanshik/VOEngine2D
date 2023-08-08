@@ -1,5 +1,6 @@
 #include "vopch.h"
 #include "Framebuffer.h"
+#include "Core/ResourceManager.h"
 
 VOEngine::Framebuffer::Framebuffer(uint32_t width, uint32_t height, const std::string& imGuiWindowName) : m_ImGuiWindowName(imGuiWindowName) {
 	m_Size = { width, height };
@@ -34,11 +35,10 @@ VOEngine::Framebuffer::~Framebuffer() {
 void VOEngine::Framebuffer::BeginFrame() {
 	glBindFramebuffer(GL_FRAMEBUFFER, m_FramebufferID);
 	ImGui::Begin(m_ImGuiWindowName.c_str());
-	if (OnImGuiWindow()) {
-		glm::uvec2 size = (glm::vec2)ImGui::GetContentRegionAvail();
-		if (size != m_Size) {
-			Resize(size);
-		}
+	glm::uvec2 size = (glm::vec2)ImGui::GetContentRegionAvail();
+	if (size != m_Size) {
+		ResizeEventInfo info{ size };
+		ResourceManager::GetInstance().GetEventNotifier()->GenerateEvent(Event{ EventType::Resize, (void*)&info});
 	}
 }
 
@@ -75,4 +75,5 @@ void VOEngine::Framebuffer::Resize(glm::uvec2 size) {
 
 	static const uint32_t draw_buffers[]{ GL_COLOR_ATTACHMENT0 };
 	glNamedFramebufferDrawBuffers(m_FramebufferID, 1, draw_buffers);
+
 }

@@ -1,5 +1,7 @@
 #include "vopch.h"
 #include "GLFWWindow.h"
+#include "Core/Common/Events.h"
+#include "Core/ResourceManager.h"
 
 void VOEngine::GLFWWindow::detectMonitor() {
 	//TODO
@@ -142,4 +144,10 @@ void VOEngine::GLFWWindow::setMonitor(Monitor* monitor) {
 	GLFWmonitor* monitorHandle = ((GLFWMonitor*)monitor)->monitorHandle;
 	const GLFWvidmode* mode = glfwGetVideoMode(monitorHandle);
 	glfwSetWindowMonitor(m_Window, monitorHandle, m_Position.x, m_Position.y, m_Size.x, m_Size.y, mode->refreshRate);
+}
+
+void VOEngine::OnResize(GLFWwindow* window, int width, int height) {
+	glm::uvec2 size{width, height};
+	ResizeEventInfo info{ size };
+	ResourceManager::GetInstance().GetEventNotifier()->GenerateEvent(Event{ EventType::Resize, (void*)&info });
 }
