@@ -44,8 +44,8 @@ namespace VOEngine {
 			updateSize();
 		}
 
-		bool isKeyPressed(VOEngine::KeyCode key) override;
-		bool shouldClose() override;
+		bool IsKeyPressed(VOEngine::KeyCode key) override;
+		bool ShouldClose() override;
 		void setMonitor(Monitor* monitor)    override;
 		void setMaximized(bool value)        override;
 		void setDecorated(bool value)        override;
@@ -54,7 +54,7 @@ namespace VOEngine {
 		void setResizable(bool value)        override;
 		void setIcon(const char* path)       override;
 		void setPosition(glm::vec2 position) override;
-		void setShouldClose(bool value)      override;
+		void SetShouldClose(bool value)      override;
 		void setTitle(const char* title)     override;
 		void setWindowMode(int wm)			 override;
 		glm::ivec2& getPos()				 override;
@@ -65,8 +65,8 @@ namespace VOEngine {
 		void requestAttention() override;
 		void changeSize(int width, int height) override;
 		void closeWindow() override;
-		void pollEvents() override;
-		void swapBuffers() override;
+		void PollEvents() override;
+		void SwapBuffers() override;
 	private:
 		void updatePos();
 		void updateSize();

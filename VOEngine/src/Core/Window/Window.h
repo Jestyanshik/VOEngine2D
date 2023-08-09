@@ -19,8 +19,8 @@ public:
 	Window(int width, int height, const std::string& title);
 	~Window();
 
-	virtual bool isKeyPressed(VOEngine::KeyCode key) = 0;
-	virtual bool shouldClose() = 0;
+	virtual bool IsKeyPressed(VOEngine::KeyCode key) = 0;
+	virtual bool ShouldClose() = 0;
 
 	bool isFullscreen() { return m_CurrentState == WindowModes::Fullscreen; };
 	bool isBorderless() { return m_CurrentState == WindowModes::Borderless; };
@@ -43,14 +43,14 @@ public:
 	virtual void setAutoIconify(bool value)      { m_AutoIconify = value; }
 	virtual void setResizable(bool value)        { m_Resizable = value; };
 	virtual void setPosition(glm::vec2 position) { m_Position = position; };
-	virtual void setShouldClose(bool value)      { m_ShouldClose = value; };
+	virtual void SetShouldClose(bool value)      { m_ShouldClose = value; };
 	virtual void setTitle(const char* title)     { m_Title = title; };
 
 	virtual void requestAttention() = 0;
 	virtual void changeSize(int width, int height) = 0;
 	virtual void closeWindow() = 0;
-	virtual void pollEvents() = 0;
-	virtual void swapBuffers() = 0;
+	virtual void PollEvents() = 0;
+	virtual void SwapBuffers() = 0;
 private:
 	
 

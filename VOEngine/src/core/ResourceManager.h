@@ -16,7 +16,7 @@ namespace VOEngine {
 		ResourceManager(ResourceManager&&) = delete;
 		ResourceManager& operator=(const ResourceManager&) = delete;
 		ResourceManager& operator=(ResourceManager&&) = delete;
-		std::shared_ptr<Window> getWindow() { return m_Window; };
+		std::shared_ptr<Window> GetWindow() { return m_Window; };
 		std::shared_ptr<SettingsManager> GetSettings() { return m_Settings; };
 		Scheduler& GetScheduler() { return m_Scheduler; };
 		std::shared_ptr<EventNotifier> GetEventNotifier() { return m_Notifier; };

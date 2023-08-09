@@ -30,15 +30,47 @@ void VOEngine::EventNotifier::GenerateEvent(Event event, bool notifyImmediately)
 		Notify(event.Type, event.Info);
 }
 
-void VOEngine::EventNotifier::Notify(EventType type, void* info) {
+bool VOEngine::EventNotifier::EventExists(EventType type) {
+	for (size_t i = m_Events.size() - 1; i > 0; i--) {
+		if (m_Events[i].Type == type) {
+			return true;
+		}
+	}
 
+	return false;
+}
+
+void VOEngine::EventNotifier::Notify(EventType type, void* info) {
 	std::vector<EventCallback> vec = m_NotifyList[type];
 	for (size_t j = 0; j < vec.size(); j++) {
 		vec[j].Callback(info);
 	}
 	
 	for (size_t i = m_Events.size() - 1; i > 0; i--) {
-		if (m_Events[i].Type = type) 
+		if (m_Events[i].Type == type) 
+			m_Events.erase(m_Events.begin() + i);
+	}
+}
+
+void VOEngine::EventNotifier::Notify(EventType type) {
+	void* info{};
+	bool eventFound = false;
+	for (size_t i = m_Events.size() - 1; i > 0; i--) {
+		if (m_Events[i].Type == type) {
+			info = m_Events[i].Info;
+			eventFound = true;
+		}
+	}
+	if (not eventFound) 
+		return;
+
+	std::vector<EventCallback> vec = m_NotifyList[type];
+	for (size_t j = 0; j < vec.size(); j++) {
+		vec[j].Callback(info);
+	}
+
+	for (size_t i = m_Events.size() - 1; i > 0; i--) {
+		if (m_Events[i].Type == type)
 			m_Events.erase(m_Events.begin() + i);
 	}
 }

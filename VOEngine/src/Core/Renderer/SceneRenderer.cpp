@@ -1,13 +1,14 @@
 #include "vopch.h"
 #include "SceneRenderer.h"
 #include "Core/ResourceManager.h"
+#include "Core/ImGui/ImGuiCore.h"
 
 VOEngine::SceneRenderer::SceneRenderer() {
 	m_Renderer = std::make_unique<Renderer>();
-	m_Framebuffer = std::make_shared<Framebuffer>(800,600, "Scene");
+	m_Framebuffer = nullptr;
 	auto eventNotifier = ResourceManager::GetInstance().GetEventNotifier();
 	eventNotifier->Subscribe(EventType::Resize, EventCallback{[this](void* info) {OnResize(info);}, "SceneRenderer"});
-	eventNotifier->Subscribe(EventType::RenderUpdate, EventCallback{ [this](void*) {UpdateBuffers();}, "SceneRenderer" });
+	eventNotifier->Subscribe(EventType::RenderUpdate, EventCallback{ [this](void*) {UpdateBuffers(); }, "SceneRenderer" });
 }
 
 void VOEngine::SceneRenderer::SetScene(std::shared_ptr<Scene> scene) {
@@ -15,12 +16,13 @@ void VOEngine::SceneRenderer::SetScene(std::shared_ptr<Scene> scene) {
 		return;
 	}
 	m_Scene = scene;
-
-	UpdateBuffers();
+	m_Framebuffer = scene->GetFramebuffer();
+	Event event{ EventType::RenderUpdate, nullptr };
+	ResourceManager::GetInstance().GetEventNotifier()->GenerateEvent(event, false);
 }
 
 void VOEngine::SceneRenderer::Render() {	
-	if (m_Scene == nullptr) 
+	if (m_Scene == nullptr or m_Framebuffer->GetSize() == glm::uvec2{0, 0})
 		return;
 
 	m_Framebuffer->BeginFrame();
@@ -78,6 +80,7 @@ void VOEngine::SceneRenderer::UpdateBuffers() {
 		vao->AttachIndexBuffer(indices, m_IndicesCount);
 		m_IndicesCount += unit->IndicesCount;
 	}
+	ImGuiWrapper::QuickWindow("Render info", "Vertex arrays:" + std::to_string(m_VertexArrays.size()));
 }
 
 std::shared_ptr<VOEngine::VertexArray> VOEngine::SceneRenderer::CreateUnitVAO(std::shared_ptr<Unit> unit) {

@@ -39,7 +39,9 @@ namespace VOEngine {
 		void Subscribe(EventType type, EventCallback callback);
 		void Unsubscribe(const std::string& notifier, EventType type);
 		void GenerateEvent(Event event, bool notifyImmediately = true);
+		bool EventExists(EventType type);
 		void Notify(EventType type, void* info);
+		void Notify(EventType type);
 	private:
 		std::vector<Event> m_Events{};
 		std::unordered_map<EventType, std::vector<EventCallback>> m_NotifyList{};

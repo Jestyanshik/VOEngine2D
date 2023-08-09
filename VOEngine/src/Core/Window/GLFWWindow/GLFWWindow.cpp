@@ -43,7 +43,7 @@ void VOEngine::GLFWWindow::setWindowMode(int wm){
 	return;
 }
 
-bool VOEngine::GLFWWindow::isKeyPressed(VOEngine::KeyCode key) {
+bool VOEngine::GLFWWindow::IsKeyPressed(VOEngine::KeyCode key) {
 	int state = glfwGetKey(m_Window, key);
 	if (state == GLFW_PRESS) {
 		return true;
@@ -51,7 +51,7 @@ bool VOEngine::GLFWWindow::isKeyPressed(VOEngine::KeyCode key) {
 	return false;
 }
 
-bool VOEngine::GLFWWindow::shouldClose() {
+bool VOEngine::GLFWWindow::ShouldClose() {
 	if (glfwWindowShouldClose(m_Window)) {
 		return true;
 	}
@@ -92,8 +92,8 @@ void VOEngine::GLFWWindow::setPosition(glm::vec2 position) {
 	glfwSetWindowPos(m_Window, (int)position.x, (int)position.y);
 }
 
-void VOEngine::GLFWWindow::setShouldClose(bool value) {
-	Window::setShouldClose(value);
+void VOEngine::GLFWWindow::SetShouldClose(bool value) {
+	Window::SetShouldClose(value);
 	glfwSetWindowShouldClose(m_Window, value);
 }
 
@@ -132,11 +132,11 @@ void VOEngine::GLFWWindow::closeWindow() {
 	glfwSetWindowShouldClose(m_Window, GLFW_TRUE);
 }
 
-void VOEngine::GLFWWindow::pollEvents() {
+void VOEngine::GLFWWindow::PollEvents() {
 	glfwPollEvents();
 }
 
-void VOEngine::GLFWWindow::swapBuffers() {
+void VOEngine::GLFWWindow::SwapBuffers() {
 	glfwSwapBuffers(m_Window);
 }
 

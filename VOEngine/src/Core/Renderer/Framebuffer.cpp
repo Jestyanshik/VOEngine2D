@@ -2,7 +2,7 @@
 #include "Framebuffer.h"
 #include "Core/ResourceManager.h"
 
-VOEngine::Framebuffer::Framebuffer(uint32_t width, uint32_t height, const std::string& imGuiWindowName) : m_ImGuiWindowName(imGuiWindowName) {
+VOEngine::Framebuffer::Framebuffer(uint32_t width, uint32_t height) {
 	m_Size = { width, height };
 
 	glCreateFramebuffers(1, &m_FramebufferID);
@@ -34,18 +34,10 @@ VOEngine::Framebuffer::~Framebuffer() {
 
 void VOEngine::Framebuffer::BeginFrame() {
 	glBindFramebuffer(GL_FRAMEBUFFER, m_FramebufferID);
-	ImGui::Begin(m_ImGuiWindowName.c_str());
-	glm::uvec2 size = (glm::vec2)ImGui::GetContentRegionAvail();
-	if (size != m_Size) {
-		ResizeEventInfo info{ size };
-		ResourceManager::GetInstance().GetEventNotifier()->GenerateEvent(Event{ EventType::Resize, (void*)&info});
-	}
 }
 
 void VOEngine::Framebuffer::EndFrame() {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	ImGui::Image((ImTextureID)m_TextureID, (glm::vec2)m_Size);
-	ImGui::End();
 }
 
 void VOEngine::Framebuffer::Resize(glm::uvec2 size) {
