@@ -9,6 +9,7 @@ namespace VOEngine {
 		~SceneRenderer() = default;
 
 		void SetScene(std::shared_ptr<Scene> scene);
+		void Clear(glm::vec4 color);
 		void Render();
 		void OnResize(void* eventInfo);
 		void UpdateBuffers();

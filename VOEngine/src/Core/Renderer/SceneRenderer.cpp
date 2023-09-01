@@ -21,6 +21,10 @@ void VOEngine::SceneRenderer::SetScene(std::shared_ptr<Scene> scene) {
 	ResourceManager::GetInstance().GetEventNotifier()->GenerateEvent(event, false);
 }
 
+void VOEngine::SceneRenderer::Clear(glm::vec4 color) {
+	m_Renderer->Clear(color);
+}
+
 void VOEngine::SceneRenderer::Render() {	
 	if (m_Scene == nullptr or m_Framebuffer->GetSize() == glm::uvec2{0, 0})
 		return;
@@ -44,7 +48,7 @@ void VOEngine::SceneRenderer::OnResize(void* eventInfo) {
 	m_Framebuffer->Resize(info.Size);
 }
 
-void VOEngine::SceneRenderer::UpdateBuffers() {
+void VOEngine::SceneRenderer::UpdateBuffers() { //todo: rewrite 
 	if (m_Scene == nullptr) {
 		return;
 	}

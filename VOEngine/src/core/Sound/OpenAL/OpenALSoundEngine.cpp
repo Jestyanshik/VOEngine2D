@@ -29,7 +29,7 @@ void VOEngine::OpenALSoundEngine::playSound(uint32_t id) {
 	m_PlayList.push_back(std::async(std::launch::async, [this, id, source, source_state]() {
 		int state = source_state;
 		while (state == AL_PLAYING) {
-			alGetSourcei(source, AL_SOURCE_STATE, &state);
+			alGetSourcei(source, AL_SOURCE_STATE, &state); 
 			m_SoundList[id]->IsPlaying = state == AL_PLAYING;
 		}
 	}));

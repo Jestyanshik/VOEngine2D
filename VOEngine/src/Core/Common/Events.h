@@ -45,6 +45,5 @@ namespace VOEngine {
 	private:
 		std::vector<Event> m_Events{};
 		std::unordered_map<EventType, std::vector<EventCallback>> m_NotifyList{};
-	public:
 	};
 }

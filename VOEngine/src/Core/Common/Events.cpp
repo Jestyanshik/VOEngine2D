@@ -53,6 +53,7 @@ void VOEngine::EventNotifier::Notify(EventType type, void* info) {
 }
 
 void VOEngine::EventNotifier::Notify(EventType type) {
+	if (not EventExists(type)) return;
 	void* info{};
 	bool eventFound = false;
 	for (size_t i = m_Events.size() - 1; i > 0; i--) {

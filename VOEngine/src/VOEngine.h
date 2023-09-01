@@ -1,15 +1,14 @@
 #pragma once
-#include "Core/Common/KeyCodes.h"
-#include "Core/Common/Performance.h"
 #include "Core/Window/Window.h"
-#include "Core/Renderer/Renderer.h"
-#include "Core/Common/PlatformUtils.h"
 #include "Core/Sound/SoundEngine.h"
 #include "Core/ImGui/ImGuiCore.h"
 #include "Core/ResourceManager.h"
 #include "Core/Common/Settings.h"
 #include "Core/Renderer/SceneRenderer.h"
 #include "Core/Common/Threading.h"
+#include "Core/Common/Events.h"
+#include "Core/Renderer/Scene.h"
+#include "Core/Renderer/Framebuffer.h"
 
 namespace VOEngine {
 	class Application {
@@ -40,7 +39,6 @@ namespace VOEngine {
 		std::vector<std::shared_ptr<Scene>> m_Scenes;
 		std::unique_ptr<SoundEngine> m_SoundEngine;
 		std::shared_ptr<Scene> m_Scene = nullptr;
-		uint64_t m_MaxFPS = 1000, m_CurrentFPS;
 		Scheduler m_Scheduler;
 
 		void CreateScene(std::shared_ptr<Framebuffer> framebuffer, const std::string& name) {
@@ -62,39 +60,28 @@ namespace VOEngine {
 			std::chrono::steady_clock::time_point end, begin;
 			uint64_t deltaTime{1};
 			while (!m_Window->ShouldClose()) {
-				
-				
-
 				m_Window->PollEvents();
 				
 				ImGuiWrapper::NewFrame();
-				
-				
+				m_Renderer->Clear({0,0,0,1});
+
 				OnImGuiRender(deltaTime);
 				
 				if (m_Scene != nullptr) {
 					begin = std::chrono::steady_clock::now();
 					
-					if (m_EventNotifier->EventExists(EventType::RenderUpdate)) {
-						m_EventNotifier->Notify(EventType::RenderUpdate);
-					}
+					m_EventNotifier->Notify(EventType::RenderUpdate);
+					
 					m_Renderer->Render();
 					OnRender(deltaTime);
-					if (m_EventNotifier->EventExists(EventType::Resize)) {
-						m_EventNotifier->Notify(EventType::Resize);
-					}
-					auto frameEnd = std::chrono::steady_clock::now();
-					uint64_t tempDelta = std::chrono::duration_cast<std::chrono::milliseconds>(frameEnd - begin).count();
+
+					m_EventNotifier->Notify(EventType::Resize);
 					
-					if (tempDelta <=  1.0 / m_MaxFPS * 1000) {
-						std::this_thread::sleep_for(std::chrono::milliseconds(uint64_t(1.0 / m_MaxFPS * 1000 - tempDelta)));
-					}
 					end = std::chrono::steady_clock::now();
-					deltaTime = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count();
+					deltaTime = std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count();
 				} 	
 				
 				ImGuiWrapper::DockSpace();
-
 				
 				if (m_Window->IsKeyPressed(Key::Escape)) {
 					m_Window->SetShouldClose(true);

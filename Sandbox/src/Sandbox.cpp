@@ -59,10 +59,9 @@ public:
 		//}
 
 		ImGui::Begin("Debug info");
-		ImGui::Text(std::format("Frametime: {}", deltaTime).c_str());
-		ImGui::Text(std::format("FPS: {}", 1 / deltaTime * 1000).c_str());
+		ImGui::Text(std::format("Frametime: {} ms", (deltaTime / 10e6)).c_str());
+		ImGui::Text(std::format("FPS: {}", 1.0 / (double)(deltaTime / 10e6)).c_str());
 		ImGui::End();
-
 
 		ImGui::ShowDemoWindow();
 	}

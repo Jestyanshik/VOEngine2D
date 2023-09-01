@@ -20,7 +20,7 @@ namespace VOEngine {
 
 		void DrawElements(VertexArray* vao, uint32_t indices);
 		void SubmitDrawCalls();
-		void Clear(glm::vec4 color);
+		void Clear(glm::vec4 color);	
 	protected:
 		Shader* m_Shader = nullptr;
 		uint32_t m_DrawCount = 0;
