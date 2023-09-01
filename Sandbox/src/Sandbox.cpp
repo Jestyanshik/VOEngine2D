@@ -76,7 +76,6 @@ public:
 		CreateScene(fb, "Unkown Scene");
 		m_Scene->LoadFromFile(m_Scene->GetName());
 		SetScene(m_Scene);
-		m_MaxFPS = 240;
 	}
 
 	void OnClose() override {
