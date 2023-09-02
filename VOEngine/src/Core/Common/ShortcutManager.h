@@ -13,6 +13,6 @@ namespace VOEngine {
 
 	private:
 		std::shared_ptr<Window> m_Window;
-		
+		std::unordered_map < KeyCode, std::function<void(void)> > m_ShortCuts;
 	};
 }
