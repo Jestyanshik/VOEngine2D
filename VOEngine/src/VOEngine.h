@@ -4,9 +4,10 @@
 #include "Core/ImGui/ImGuiCore.h"
 #include "Core/ResourceManager.h"
 #include "Core/Common/Settings.h"
-#include "Core/Renderer/SceneRenderer.h"
 #include "Core/Common/Threading.h"
 #include "Core/Common/Events.h"
+#include "Core/Common/ShortcutManager.h"
+#include "Core/Renderer/SceneRenderer.h"
 #include "Core/Renderer/Scene.h"
 #include "Core/Renderer/Framebuffer.h"
 
@@ -19,6 +20,7 @@ namespace VOEngine {
 			m_Settings = ResourceManager::GetInstance().GetSettings();
 			m_Scheduler = ResourceManager::GetInstance().GetScheduler();
 			m_EventNotifier = ResourceManager::GetInstance().GetEventNotifier();
+			m_ShortcutManager = std::make_shared<ShortcutManager>(m_Window);
 			m_Renderer = std::make_unique<SceneRenderer>();
 			m_SoundEngine = BuildSoundEngine();
 		}
@@ -26,7 +28,7 @@ namespace VOEngine {
 		virtual void OnRender(int64_t deltaTime) = 0;
 		virtual void OnStartup() = 0;
 		virtual void OnClose() = 0;
-		void run() {
+		void Run() {
 			OnStartup();
 			Render();
 			OnCleanup();
@@ -39,6 +41,7 @@ namespace VOEngine {
 		std::vector<std::shared_ptr<Scene>> m_Scenes;
 		std::unique_ptr<SoundEngine> m_SoundEngine;
 		std::shared_ptr<Scene> m_Scene = nullptr;
+		std::shared_ptr<ShortcutManager> m_ShortcutManager;
 		Scheduler m_Scheduler;
 
 		void CreateScene(std::shared_ptr<Framebuffer> framebuffer, const std::string& name) {
@@ -78,13 +81,22 @@ namespace VOEngine {
 					m_EventNotifier->Notify(EventType::Resize);
 					
 					end = std::chrono::steady_clock::now();
-					deltaTime = std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count();
+					deltaTime = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin).count();
 				} 	
-				
+
 				ImGuiWrapper::DockSpace();
 				
-				if (m_Window->IsKeyPressed(Key::Escape)) {
-					m_Window->SetShouldClose(true);
+				//if (m_Window->IsKeyPressed(Key::Escape)) {
+				//	m_Window->SetShouldClose(true);
+				//}
+
+				m_ShortcutManager->DispatchShorcuts();
+
+				if (m_Window->IsKeyPressed(Key::K)) {
+					m_Window->SetWindowMode(WindowModes::Fullscreen);
+				}
+				if (m_Window->IsKeyPressed(Key::L)) {
+					m_Window->SetWindowMode(WindowModes::Windowed);
 				}
 
 				ImGuiWrapper::EndFrame();

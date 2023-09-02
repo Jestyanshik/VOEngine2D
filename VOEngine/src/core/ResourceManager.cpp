@@ -26,12 +26,12 @@ namespace VOEngine {
 		else size = { 1280, 720 };
 		if (m_Settings->GetValue("WindowLibrary") == "GLFW")
 			m_Window = std::make_shared<GLFWWindow>(size.x, size.y, m_Settings->GetValue("Name"));
-		m_Window->setDecorated(true);
+		m_Window->SetDecorated(true);
 		std::vector<std::string> strPos = m_Settings->GetNodeSequence("Window", "Pos");
 		glm::ivec2 pos;
 		if (!(strPos[0]).empty()) pos = { std::stoi(strPos[0]), std::stoi(strPos[1]) };
 		else pos = { 100, 100 };
-		m_Window->setPosition(pos);
+		m_Window->SetPosition(pos);
 
 		{
 			if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
@@ -41,7 +41,7 @@ namespace VOEngine {
 		}
 
 		if (m_Settings->GetValue("WindowLibrary") == "GLFW")
-			ImGui_ImplGlfw_InitForOpenGL(((GLFWWindow*)m_Window.get())->getNativeWindow(), true);
+			ImGui_ImplGlfw_InitForOpenGL(((GLFWWindow*)m_Window.get())->GetNativeWindow(), true);
 		if (m_Settings->GetValue("Renderer") == "OpenGL")
 			ImGui_ImplOpenGL3_Init("#version 460");
 	}
@@ -57,8 +57,8 @@ namespace VOEngine {
 	}
 
 	void ResourceManager::CollectData() {
-		std::vector<uint32_t> windowSize = { m_Window->getSize().x, m_Window->getSize().y };
-		std::vector<int> windowPos = { m_Window->getPos().x, m_Window->getPos().y };
+		std::vector<uint32_t> windowSize = { m_Window->GetSize().x, m_Window->GetSize().y };
+		std::vector<int> windowPos = { m_Window->GetPos().x, m_Window->GetPos().y };
 
 		m_Settings->SetNodeValue("Window", "Size", windowSize);
 		m_Settings->SetNodeValue("Window", "Pos", windowPos);

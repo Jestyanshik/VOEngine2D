@@ -22,33 +22,34 @@ public:
 	virtual bool IsKeyPressed(VOEngine::KeyCode key) = 0;
 	virtual bool ShouldClose() = 0;
 
-	bool isFullscreen() { return m_CurrentState == WindowModes::Fullscreen; };
-	bool isBorderless() { return m_CurrentState == WindowModes::Borderless; };
-	bool isWindowed()   { return m_CurrentState == WindowModes::Windowed; };
-	const int getWidth()                { return getSize().x; };
-	const int getHeight()               { return getSize().y; };
-	const int getXpos()					{ return getPos().x; };
-	const int getYpos()					{ return getPos().y; };
-	virtual const std::string& getName() { return m_Name; };
+	bool IsFullscreen() { return m_CurrentState == WindowModes::Fullscreen; };
+	bool IsBorderless() { return m_CurrentState == WindowModes::Borderless; };
+	bool IsWindowed()   { return m_CurrentState == WindowModes::Windowed; };
+	const int GetWidth()                { return GetSize().x; };
+	const int GetHeight()               { return GetSize().y; };
+	const int GetXpos()					{ return GetPos().x; };
+	const int GetYpos()					{ return GetPos().y; };
+	virtual const std::string& GetName() { return m_Name; };
 
-	virtual const glm::ivec2& getPos() = 0;
-	virtual const glm::uvec2& getSize() = 0;
-	virtual std::vector<Monitor*> getAvailableMonitors() = 0;
-	virtual void setIcon(const char* path) = 0;
-	virtual void setMonitor(Monitor* monitor) = 0;
-	virtual void setWindowMode(int wm) = 0;
-	virtual void setMaximized(bool value)		 { m_Maximized = value; m_CurrentState = WindowModes::Fullscreen; };
-	virtual void setDecorated(bool value)        { m_Decorated = value; };
-	virtual void setFocused(bool value)          { m_Focused = value; };
-	virtual void setAutoIconify(bool value)      { m_AutoIconify = value; }
-	virtual void setResizable(bool value)        { m_Resizable = value; };
-	virtual void setPosition(glm::vec2 position) { m_Position = position; };
+	virtual const glm::ivec2& GetPos() = 0;
+	virtual const glm::uvec2& GetSize() = 0;
+	virtual std::vector<Monitor*> GetAvailableMonitors() = 0;
+	virtual void SetIcon(const char* path) = 0;
+	virtual void SetMonitor(Monitor* monitor) = 0;
+	virtual void SetVSync(bool value) = 0;
+	virtual void SetWindowMode(int wm) = 0;
+	virtual void SetMaximized(bool value)		 { m_Maximized = value; m_CurrentState = WindowModes::Fullscreen; };
+	virtual void SetDecorated(bool value)        { m_Decorated = value; };
+	virtual void SetFocused(bool value)          { m_Focused = value; };
+	virtual void SetAutoIconify(bool value)      { m_AutoIconify = value; }
+	virtual void SetResizable(bool value)        { m_Resizable = value; };
+	virtual void SetPosition(glm::vec2 position) { m_Position = position; };
 	virtual void SetShouldClose(bool value)      { m_ShouldClose = value; };
-	virtual void setTitle(const char* title)     { m_Title = title; };
+	virtual void SetTitle(const char* title)     { m_Title = title; };
 
-	virtual void requestAttention() = 0;
-	virtual void changeSize(int width, int height) = 0;
-	virtual void closeWindow() = 0;
+	virtual void RequestAttention() = 0;
+	virtual void ChangeSize(int width, int height) = 0;
+	virtual void CloseWindow() = 0;
 	virtual void PollEvents() = 0;
 	virtual void SwapBuffers() = 0;
 private:
